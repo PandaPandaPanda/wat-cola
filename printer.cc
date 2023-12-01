@@ -227,7 +227,7 @@ void Printer::flush_courier(Item item) {
 }
 
 void Printer::flush() {
-    for (unsigned int i = 0; i < voters; i+=1) {
+    for (unsigned int i = 0; i < numStudents+numVendingMachines+numCouriers+6; i+=1) {
         if (!buffer[i].is_empty) {                                  // only print if buffer item is not empty
             switch(buffer[i].Kind) {                               // print according to specifications based on state
                 case Printer::Kind::Parent:
