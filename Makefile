@@ -8,7 +8,7 @@ endif
 MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}    # makefile name
 
 OBJECTS = main.o config.o bank.o parent.o printer.o # list of object files
-EXEC = vote
+EXEC = wat-cola
 
 DEPENDS = ${OBJECTS:.o=.d}                 # substitute ".o" with ".d"
 

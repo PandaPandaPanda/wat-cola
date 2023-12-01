@@ -51,4 +51,5 @@ int main( int argc, char *argv[] ) {
   Bank bank(params.numStudents);
   Parent parent(prt, bank, params.numStudents, params.parentalDelay);
 
+  while(true) {}
 } // main
