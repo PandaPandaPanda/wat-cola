@@ -6,20 +6,20 @@ using namespace std;
 Printer::Printer(unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers) 
     : numStudents(numStudents), numVendingMachines(numVendingMachines), numCouriers(numCouriers) {
     buffer = new Printer::Item[numStudents+numVendingMachines+numCouriers+6];  // create buffer
-    buffer[0].Kind = Printer::Kind::Parent;
-    buffer[1].Kind = Printer::Kind::Groupoff;
-    buffer[2].Kind = Printer::Kind::WATCardOffice;
-    buffer[3].Kind = Printer::Kind::NameServer;
-    buffer[4].Kind = Printer::Kind::Truck;
-    buffer[5].Kind = Printer::Kind::BottlingPlant;
+    buffer[0].kind = Printer::Kind::Parent;
+    buffer[1].kind = Printer::Kind::Groupoff;
+    buffer[2].kind = Printer::Kind::WATCardOffice;
+    buffer[3].kind = Printer::Kind::NameServer;
+    buffer[4].kind = Printer::Kind::Truck;
+    buffer[5].kind = Printer::Kind::BottlingPlant;
     for (unsigned int i = 6; i < 6+numStudents; i+=1) {
-        buffer[i].Kind = Printer::Kind::Student
+        buffer[i].kind = Printer::Kind::Student;
     }
     for (unsigned int i = 6+numStudents; i < 6+numStudents+numVendingMachines; i+=1) {
-        buffer[i].Kind = Printer::Kind::Vending
+        buffer[i].kind = Printer::Kind::Vending;
     }
     for (unsigned int i = 6+numStudents+numVendingMachines; i < numStudents+numVendingMachines+numCouriers+6; i+=1) {
-        buffer[i].Kind = Printer::Kind::Courier
+        buffer[i].kind = Printer::Kind::Courier;
     }
     PRINT({
         cout << "Parent\tGroupoff\tWATOff\tNames\tTruck\tTruck\tPlant\t";
@@ -52,12 +52,12 @@ Printer::~Printer() {
 } // ~Printer
 
 void Printer::flush_parent(Item item) {
-    switch(buffer[i].state) {
+    switch(item.state) {
         case 'S':
             cout << "S";
             break;
         case 'D':
-            cout << "D" << buffer[i].v1 << "," << buffer[i].v2;
+            cout << "D" << item.v1 << "," << item.v2;
             break;
         case 'F':
             cout << 'F';
@@ -65,12 +65,12 @@ void Printer::flush_parent(Item item) {
     }
 }
 void Printer::flush_groupoff(Item item) {
-    switch(buffer[i].state) {
+    switch(item.state) {
         case 'S':
             cout << "S";
             break;
         case 'D':
-            cout << "D" << buffer[i].v1;
+            cout << "D" << item.v1;
             break;
         case 'F':
             cout << 'F';
@@ -78,7 +78,7 @@ void Printer::flush_groupoff(Item item) {
     }
 };
 void Printer::flush_office(Item item) {
-    switch(buffer[i].state) {
+    switch(item.state) {
         case 'S':
             cout << "S";
             break;
@@ -86,10 +86,10 @@ void Printer::flush_office(Item item) {
             cout << "W";
             break;
         case 'C':
-            cout << "C" << buffer[i].v1 << "," << buffer[i].v2;
+            cout << "C" << item.v1 << "," << item.v2;
             break;
         case 'T':
-            cout << "T" << buffer[i].v1 << "," << buffer[i].v2;
+            cout << "T" << item.v1 << "," << item.v2;
             break;
         case 'F':
             cout << 'F';
@@ -97,15 +97,15 @@ void Printer::flush_office(Item item) {
     }
 }
 void Printer::flush_name(Item item) {
-    switch(buffer[i].state) {
+    switch(item.state) {
         case 'S':
             cout << "S";
             break;
         case 'R':
-            cout << "R" << buffer[i].v1;
+            cout << "R" << item.v1;
             break;
         case 'N':
-            cout << "N" << buffer[i].v1 << "," << buffer[i].v2;
+            cout << "N" << item.v1 << "," << item.v2;
             break;
         case 'F':
             cout << 'F';
@@ -113,21 +113,21 @@ void Printer::flush_name(Item item) {
     }
 }
 void Printer::flush_truck(Item item) {
-    switch(buffer[i].state) {
+    switch(item.state) {
         case 'S':
             cout << "S";
             break;
         case 'P':
-            cout << "P" << buffer[i].v1;
+            cout << "P" << item.v1;
             break;
         case 'd':
-            cout << "d" << buffer[i].v1 << "," << buffer[i].v2;
+            cout << "d" << item.v1 << "," << item.v2;
             break;
         case 'U':
-            cout << "U" << buffer[i].v1 << "," << buffer[i].v2;
+            cout << "U" << item.v1 << "," << item.v2;
             break;
         case 'D':
-            cout << "D" << buffer[i].v1 << "," << buffer[i].v2;
+            cout << "D" << item.v1 << "," << item.v2;
             break;
         case 'W':
             cout << 'W';
@@ -138,12 +138,12 @@ void Printer::flush_truck(Item item) {
     }
 }
 void Printer::flush_plant(Item item) {
-    switch(buffer[i].state) {
+    switch(item.state) {
         case 'S':
             cout << "S";
             break;
         case 'G':
-            cout << "G" << buffer[i].v1;
+            cout << "G" << item.v1;
             break;
         case 'P':
             cout << 'P';
@@ -154,24 +154,24 @@ void Printer::flush_plant(Item item) {
     }
 }
 void Printer::flush_student(Item item) {
-    switch(buffer[i].state) {
+    switch(item.state) {
         case 'S':
-            cout << "S" << buffer[i].v1 << "," << buffer[i].v2;
+            cout << "S" << item.v1 << "," << item.v2;
             break;
         case 'V':
-            cout << "V" << buffer[i].v1;
+            cout << "V" << item.v1;
             break;
         case 'G':
-            cout << "G" << buffer[i].v1 << "," << buffer[i].v2;
+            cout << "G" << item.v1 << "," << item.v2;
             break;
         case 'B':
-            cout << "B" << buffer[i].v1 << "," << buffer[i].v2;
+            cout << "B" << item.v1 << "," << item.v2;
             break;
         case 'a':
-            cout << "a" << buffer[i].v1 << "," << buffer[i].v2;
+            cout << "a" << item.v1 << "," << item.v2;
             break;
         case 'A':
-            cout << "A" << buffer[i].v1 << "," << buffer[i].v2;
+            cout << "A" << item.v1 << "," << item.v2;
             break;
         case 'X':
             cout << 'X';
@@ -185,9 +185,9 @@ void Printer::flush_student(Item item) {
     }
 }
 void Printer::flush_vending(Item item) {
-    switch(buffer[i].state) {
+    switch(item.state) {
         case 'S':
-            cout << "S" << buffer[i].v1;
+            cout << "S" << item.v1;
             break;
         case 'r':
             cout << "r";
@@ -199,7 +199,7 @@ void Printer::flush_vending(Item item) {
             cout << "A";
             break;
         case 'B':
-            cout << "B" << buffer[i].v1 << "," << buffer[i].v2;
+            cout << "B" << item.v1 << "," << item.v2;
             break;
         case 'F':
             cout << 'F';
@@ -207,18 +207,18 @@ void Printer::flush_vending(Item item) {
     }
 }
 void Printer::flush_courier(Item item) {
-    switch(buffer[i].state) {
+    switch(item.state) {
         case 'S':
             cout << "S";
             break;
         case 't':
-            cout << "t" << buffer[i].v1 << "," << buffer[i].v2;
+            cout << "t" << item.v1 << "," << item.v2;
             break;
         case 'L':
-            cout << "L" << buffer[i].v1;
+            cout << "L" << item.v1;
             break;
         case 'T':
-            cout << "T" << buffer[i].v1 << "," << buffer[i].v2;
+            cout << "T" << item.v1 << "," << item.v2;
             break;
         case 'F':
             cout << 'F';
@@ -229,7 +229,7 @@ void Printer::flush_courier(Item item) {
 void Printer::flush() {
     for (unsigned int i = 0; i < numStudents+numVendingMachines+numCouriers+6; i+=1) {
         if (!buffer[i].is_empty) {                                  // only print if buffer item is not empty
-            switch(buffer[i].Kind) {                               // print according to specifications based on state
+            switch(buffer[i].kind) {                               // print according to specifications based on state
                 case Printer::Kind::Parent:
                     flush_parent(buffer[i]);
                 case Printer::Kind::Groupoff:
@@ -246,7 +246,7 @@ void Printer::flush() {
                     flush_student(buffer[i]);
                 case Printer::Kind::Vending:
                     flush_vending(buffer[i]);
-                case Printer::Kind::Courier;
+                case Printer::Kind::Courier:
                     flush_courier(buffer[i]);
             } // switch
             buffer[i].is_empty = true;                              // slot is flushed - now empty
@@ -271,10 +271,11 @@ int Printer::return_id_for_kind(Kind kind) {
         case Printer::Kind::BottlingPlant:
             return 5;
     }
+    return -1;
 }
 
 int Printer::return_id_for_kind_and_id(Kind kind, unsigned int lid) {
-    id = 6+lid;
+    unsigned int id = 6+lid;
     if (kind == Printer::Kind::Vending) {
         id += numStudents;
     } else if (kind == Printer::Kind::Courier) {
@@ -286,7 +287,7 @@ int Printer::return_id_for_kind_and_id(Kind kind, unsigned int lid) {
 void Printer::print( Kind kind, char state ) {
     int id = return_id_for_kind(kind);
     if (!buffer[id].is_empty) {                                     // if overwriting slot - flush first
-        Printer::flush();
+        flush();
     } // if
     buffer[id].is_empty = false;                                    // set slot as occupied
     buffer[id].state = state;                                       // set state
@@ -294,7 +295,7 @@ void Printer::print( Kind kind, char state ) {
 void Printer::print( Kind kind, char state, unsigned int value1 ) {
     int id = return_id_for_kind(kind);
     if (!buffer[id].is_empty) {                                     // if overwriting slot - flush first
-        Printer::flush();
+        flush();
     } // if
     buffer[id].is_empty = false;                                    // set slot as occupied
     buffer[id].state = state;                                       // set state

@@ -1,6 +1,12 @@
 #ifndef PRINTER_H
 #define PRINTER_H
 
+#ifdef NOOUTPUT
+#define PRINT( stmt )
+#else
+#define PRINT( stmt ) stmt
+#endif // NOOUTPUT
+
 _Task BottlingPlant;
 
 _Monitor Printer {
@@ -20,13 +26,12 @@ _Monitor Printer {
 		bool is_empty = true;                                                       // indicates if the buffer item has data to print.
 		Kind kind;
         char state;
-        BottlingPlant::Flavours f;
         unsigned int v1, v2;
 	};
 	Item* buffer;                                                                   // buffer array - dynamically allocated
 	void flush();
 	int return_id_for_kind(Kind kind);
-	int return_id_for_kind_and_id(Kind kind, lid);
+	int return_id_for_kind_and_id(Kind kind, unsigned int lid);
 	void flush_parent(Item item);
 	void flush_groupoff(Item item);
 	void flush_office(Item item);
