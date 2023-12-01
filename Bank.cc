@@ -6,6 +6,10 @@ Bank::Bank( unsigned int numStudents ): numStudents(numStudents) {
     accounts = new unsigned int[numStudents]();
 }
 
+Bank::~Bank() {
+    delete[] accounts;
+}
+
 void Bank::deposit( unsigned int id, unsigned int amount ) {
     accounts[id]+=amount;
 }
