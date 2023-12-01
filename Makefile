@@ -7,7 +7,7 @@ ifeq ("${OUTPUT}","NOOUTPUT")
 endif
 MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}    # makefile name
 
-OBJECTS = main.o bank.o parent.o printer.o # list of object files
+OBJECTS = main.o config.o bank.o parent.o printer.o # list of object files
 EXEC = vote
 
 DEPENDS = ${OBJECTS:.o=.d}                 # substitute ".o" with ".d"
