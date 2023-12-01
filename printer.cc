@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Printer.h"
+#include "printer.h"
 
 using namespace std;
 

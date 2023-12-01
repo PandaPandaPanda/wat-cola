@@ -1,6 +1,8 @@
 #ifndef PRINTER_H
 #define PRINTER_H
 
+_Task BottlingPlant;
+
 _Monitor Printer {
   public:
 	enum Kind { Parent, Groupoff, WATCardOffice, NameServer, Truck, BottlingPlant, Student, Vending, Courier };

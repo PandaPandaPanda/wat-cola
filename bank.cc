@@ -1,4 +1,4 @@
-#include "Bank.h"
+#include "bank.h"
 
 using namespace std;
 
@@ -12,6 +12,7 @@ Bank::~Bank() {
 
 void Bank::deposit( unsigned int id, unsigned int amount ) {
     accounts[id]+=amount;
+    if (debug) {cout << "Student " << id << " deposits " << amount << endl;}
 }
 
 void Bank::withdraw( unsigned int id, unsigned int amount ) {

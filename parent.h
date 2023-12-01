@@ -1,6 +1,15 @@
 #ifndef PARENT_H
 #define PARENT_H
 
+#include "bank.h"
+
+// ==== Global debug
+#include <iostream>
+extern bool debug;
+// ====
+
+_Monitor Printer;
+
 _Task Parent {
 	Printer & prt;
 	Bank & bank;
