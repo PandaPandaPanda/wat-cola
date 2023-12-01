@@ -47,6 +47,8 @@ int main( int argc, char *argv[] ) {
   processConfigFile(configFile.c_str(), params );
   uProcessor p[processors - 1] __attribute__(( unused )); // create (processors-1) more processors
 
-
+  Printer prt(params.numStudents, params.numVendingMachines, params.numCouriers);
+  Bank bank(params.numStudents);
+  Parent parent(prt, bank, params.numStudents, params.parentalDelay);
 
 } // main
