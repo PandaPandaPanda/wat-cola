@@ -2,6 +2,11 @@
 #define VENDINGMACHINE_H
 
 _Task VendingMachine {
+	Printer & prt;
+	NameServer & nameServer;
+	unsigned int id;
+	unsigned int sodaCost; 
+	int* inventory;
 	void main();
   public:
 	_Event Free {};						// free, advertisement
@@ -13,6 +18,7 @@ _Task VendingMachine {
 	void restocked();
 	_Nomutex unsigned int cost() const;
 	_Nomutex unsigned int getId() const;
+	~VendingMachine();
 };
 
 #endif
