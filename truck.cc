@@ -2,6 +2,7 @@
 #include "bottlingPlant.h"
 #include "nameServer.h"
 #include "vendingmachine.h"
+#include "printer.h"
 using namespace std;
 
 Truck::Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant,
@@ -17,6 +18,7 @@ Truck::~Truck() {
 }
 
 void Truck::main() {
+    PRINT(prt.print(Printer::Truck, 'S');)
     for(;;) {
         yield(prng(0,10));
         try {
@@ -29,6 +31,14 @@ void Truck::main() {
                     cout << endl;
                 }
                 plant.getShipment(cargo);
+                PRINT({
+                    int totalPickedUp = 0;
+                    for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
+                        totalPickedUp += cargo[i];
+                    }
+                    
+                    prt.print(Printer::Truck, 'P', totalPickedUp);
+                })
                 if (debug) {
                     cout << "cur cargo: ";
                     for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
@@ -47,6 +57,15 @@ void Truck::main() {
                 cout << machineList[i]->getId();
             } 
             unsigned int* machineInventory = machineList[curMachine]->inventory();
+
+            PRINT({
+                int totalRemaining = 0;
+                for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
+                    totalRemaining += cargo[i];
+                }
+                
+                prt.print(Printer::Truck, 'd', machineList[curMachine]->getId(), totalRemaining);
+            })
             for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
                 unsigned int neededStock = maxStockPerFlavour - machineInventory[i];
                 if (noCargo && cargo[i]!=0) {
@@ -60,6 +79,14 @@ void Truck::main() {
                     cargo[i]-=neededStock;
                 }
             }
+            PRINT({
+                int totalUnfilled = 0;
+                for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
+                    totalUnfilled = maxStockPerFlavour - machineInventory[i];
+                }
+                
+                prt.print(Printer::Truck, 'U', machineList[curMachine]->getId(), totalUnfilled);
+            })
             if (debug) {
                 cout << "restocked: ";
                 for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
@@ -72,15 +99,27 @@ void Truck::main() {
                 }
                 cout << endl;
             }
+            // delivery ended
+            PRINT({
+                int totalRemaining = 0;
+                for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
+                    totalRemaining += cargo[i];
+                }
+                
+                prt.print(Printer::Truck, 'D', machineList[curMachine]->getId(), totalRemaining);
+            })
             if (prng(100) == 42) {
+                PRINT(prt.print(Printer::Truck, 'W');)
                 yield(10);
             }
             if (noCargo) {
                 break;
             }
+
             curMachine = (1+curMachine) % numVendingMachines;
         }
 
     }
+    PRINT(prt.print(Printer::Truck, 'W');)
 }
 
