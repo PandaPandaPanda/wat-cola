@@ -10,6 +10,7 @@
 #include "printer.h"
 #include "bank.h"
 #include "parent.h"
+#include "watcardOffice.h"
 
 using namespace std;
 
@@ -50,6 +51,17 @@ int main( int argc, char *argv[] ) {
   Printer prt(params.numStudents, params.numVendingMachines, params.numCouriers);
   Bank bank(params.numStudents);
   Parent parent(prt, bank, params.numStudents, params.parentalDelay);
+  WATCardOffice office(prt, bank, params.numCouriers);
+
+  Student* students[params.numStudents];
+  for (unsigned int i = 0; i < params.numStudents; i++) {
+    students[i] = new Student(prt, office, bank, i, params.maxPurchases);
+  } // for
+  // wait for students to finish
+  for (unsigned int i = 0; i < params.numStudents; i++) {
+    delete students[i]
+  } // for
+  delete[] students;
 
   while(true) {}
 } // main
