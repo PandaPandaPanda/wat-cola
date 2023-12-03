@@ -22,7 +22,7 @@ Printer::Printer(unsigned int numStudents, unsigned int numVendingMachines, unsi
         buffer[i].kind = Printer::Kind::Courier;
     }
     PRINT({
-        cout << "Parent\tGroupoff\tWATOff\tNames\tTruck\tTruck\tPlant\t";
+        cout << "Parent\tGropoff\tWATOff\tNames\tTruck\tPlant\t";
         for (unsigned int i = 0; i < numStudents; i += 1) {  // print beginning vector labels
             cout << "Stud" << i << "\t";
         }  // for

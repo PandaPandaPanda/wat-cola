@@ -1,7 +1,7 @@
 #include "parent.h"
 
 // ==== Global debug
-bool debug = false;
+bool debug = true;
 // ====
 
 using namespace std;

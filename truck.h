@@ -1,7 +1,15 @@
 #ifndef TRUCK_H
 #define TRUCK_H
 
-_Task VendingMachine
+_Monitor Printer;
+_Task VendingMachine;
+_Task NameServer;
+_Task BottlingPlant;
+
+// ==== Global debug
+#include <iostream>
+extern bool debug;
+// ====
 
 _Task Truck {
 	Printer & prt;
@@ -9,9 +17,9 @@ _Task Truck {
 	BottlingPlant & plant;
 	unsigned int numVendingMachines;
 	unsigned int maxStockPerFlavour;
-	int* cargo;
+	unsigned int* cargo;
 	VendingMachine ** machineList;
-	int curMachine;
+	int curMachine = 0;
 	void main();
   public:
 	Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant,
