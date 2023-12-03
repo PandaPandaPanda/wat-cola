@@ -1,4 +1,5 @@
-#include "BottlingPlant.h"
+#include "bottlingPlant.h"
+#include "truck.h"
 
 using namespace std;
 
@@ -6,8 +7,8 @@ BottlingPlant::BottlingPlant(Printer& prt, NameServer& nameServer, unsigned int 
               unsigned int maxShippedPerFlavour, unsigned int maxStockPerFlavour,
               unsigned int timeBetweenShipments) 
               : prt(prt), nameServer(nameServer), numVendingMachines(numVendingMachines), maxShippedPerFlavour(maxShippedPerFlavour), maxStockPerFlavour(maxStockPerFlavour), timeBetweenShipments(timeBetweenShipments) {
-    truck = Truck::Truck(prt, nameServer, &this, numVendingMachines, maxStockPerFlavour);
-    stock = new int[BottlingPlant::Flavours::NUM_OF_FLAVOURS]();
+    truck = new Truck(prt, nameServer, *this, numVendingMachines, maxStockPerFlavour);
+    stock = new unsigned int[BottlingPlant::Flavours::NUM_OF_FLAVOURS]();
 
 }
 
@@ -18,13 +19,18 @@ BottlingPlant::~BottlingPlant() {
 void BottlingPlant::main() {
     for (;;) {
         yield(timeBetweenShipments);
+        if (debug) {cout << "production run: " << endl;}
         for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
-            stock[i]+=prng(0, maxShippedPerFlavour);
-            if (stock[i] > maxStockPerFlavour) {
-                stock[i] = maxStockPerFlavour;
-            }
+            stock[i]=prng(0, maxShippedPerFlavour);
         }
-        _Accept(getShipment) or _Accept(~BottlingPlant) {
+        if (debug) {
+            cout << "stock: ";
+            for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
+                cout << stock[i] << " ";
+            }
+            cout << endl;
+        }
+        _Accept(getShipment) {} or _Accept(~BottlingPlant) {
             closing = true;
             break;
         };
@@ -41,6 +47,6 @@ void BottlingPlant::getShipment(unsigned int cargo[]) {
         stock[i] = 0;
     }
     if (closing && none_copied) {
-        _Resume Shutdown() _At truck;
+        _Resume Shutdown() _At *truck;
     }
 }

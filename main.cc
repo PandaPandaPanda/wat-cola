@@ -6,11 +6,14 @@
 #include "unistd.h" // getpid
 
 #include "config.h"
-
 #include "printer.h"
 #include "bank.h"
 #include "parent.h"
 #include "watcardOffice.h"
+#include "nameServer.h"
+#include "vendingmachine.h"
+#include "truck.h"
+#include "bottlingPlant.h"
 
 using namespace std;
 
@@ -49,9 +52,18 @@ int main( int argc, char *argv[] ) {
   uProcessor p[processors - 1] __attribute__(( unused )); // create (processors-1) more processors
 
   Printer prt(params.numStudents, params.numVendingMachines, params.numCouriers);
+
   Bank bank(params.numStudents);
   Parent parent(prt, bank, params.numStudents, params.parentalDelay);
   WATCardOffice office(prt, bank, params.numCouriers);
+
+  NameServer ns(prt, params.numVendingMachines, params.numStudents);
+  VendingMachine* vmList[params.numVendingMachines];
+  for (unsigned int id = 0; id < params.numVendingMachines; id+=1) {
+      vmList[id] = new VendingMachine(prt, ns, id, params.sodaCost);
+  }
+  BottlingPlant bp(prt, ns, params.numVendingMachines, params.maxShippedPerFlavour,
+         params.maxStockPerFlavour, params.timeBetweenShipments);
 
   Student* students[params.numStudents];
   for (unsigned int i = 0; i < params.numStudents; i++) {
@@ -63,5 +75,7 @@ int main( int argc, char *argv[] ) {
   } // for
   delete[] students;
 
+  delete [] vmList;
+  
   while(true) {}
 } // main

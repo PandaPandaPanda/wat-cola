@@ -1,13 +1,19 @@
 #ifndef BOTTLINGPLANT_H
 #define BOTTLINGPLANT_H
 
+_Task Truck;
+_Task NameServer;
+_Monitor Printer;
+
 _Task BottlingPlant {
 	Printer & prt;
 	NameServer & nameServer;
+	Truck* truck;
 	unsigned int numVendingMachines;
 	unsigned int maxShippedPerFlavour;
 	unsigned int maxStockPerFlavour;
 	unsigned int timeBetweenShipments;
+	unsigned int * stock;
 	bool closing = false;
 	void main();
   public:
