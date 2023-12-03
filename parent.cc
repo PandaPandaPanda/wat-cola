@@ -18,7 +18,6 @@ void Parent::main() {
             yield(parentalDelay);
             unsigned int amount = prng(1,3);
             unsigned int id = prng(0, numStudents-1);
-            if (debug) {cout << "Parent::main: Depositing $" << amount << " into account of student " << id << endl;}
             PRINT(prt.print(Printer::Parent, 'D', id, amount);)
             bank.deposit(id, amount);
         }
