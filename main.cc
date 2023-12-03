@@ -15,6 +15,7 @@
 #include "truck.h"
 #include "bottlingPlant.h"
 #include "student.h"
+#include "groupoff.h"
 
 using namespace std;
 
@@ -58,6 +59,7 @@ int main( int argc, char *argv[] ) {
   Parent parent(prt, bank, params.numStudents, params.parentalDelay);
   WATCardOffice office(prt, bank, params.numCouriers);
 
+  Groupoff groupoff(prt, params.numStudents, params.sodaCost, params.groupoffDelay);
   NameServer ns(prt, params.numVendingMachines, params.numStudents);
   // VendingMachine* vmList[params.numVendingMachines];
   // for (unsigned int id = 0; id < params.numVendingMachines; id+=1) {
@@ -68,7 +70,7 @@ int main( int argc, char *argv[] ) {
 
   Student* students[params.numStudents];
   for (unsigned int i = 0; i < params.numStudents; i++) {
-    students[i] = new Student(prt, ns, office, i, params.maxPurchases);
+    students[i] = new Student(prt, ns, office, groupoff, i, params.maxPurchases);
   } // for
   // wait for students to finish
   for (unsigned int i = 0; i < params.numStudents; i++) {

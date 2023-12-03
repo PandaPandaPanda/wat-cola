@@ -9,12 +9,8 @@ void Student::main() {
        while (true) {}
 }
 
-// Student::Student( Printer & prt, NameServer & nameServer, WATCardOffice & cardOffice, Groupoff & groupoff,
-// 			 unsigned int id, unsigned int maxPurchases ) : 
-//        prt(prt), nameServer(nameServer), cardOffice(cardOffice), groupoff(groupoff), id(id), maxPurchases(maxPurchases) {
-// }
-
-Student::Student( Printer & prt, NameServer & nameServer, WATCardOffice & cardOffice, 
+Student::Student( Printer & prt, NameServer & nameServer, WATCardOffice & cardOffice, Groupoff & groupoff,
 			 unsigned int id, unsigned int maxPurchases ) : 
        prt(prt), nameServer(nameServer), cardOffice(cardOffice), groupoff(groupoff), id(id), maxPurchases(maxPurchases) {
 }
+
