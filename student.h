@@ -15,6 +15,8 @@ _Task Student {
 	unsigned int id;
 	unsigned int maxPurchases;
 
+	WATCard * card;
+
 	void main();
   public:
 	Student( Printer & prt, NameServer & nameServer, WATCardOffice & cardOffice, Groupoff & groupoff,
