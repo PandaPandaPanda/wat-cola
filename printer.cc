@@ -232,22 +232,31 @@ void Printer::flush() {
             switch(buffer[i].kind) {                               // print according to specifications based on state
                 case Printer::Kind::Parent:
                     flush_parent(buffer[i]);
+                    break;
                 case Printer::Kind::Groupoff:
                     flush_groupoff(buffer[i]);
+                    break;
                 case Printer::Kind::WATCardOffice:
                     flush_office(buffer[i]);
+                    break;
                 case Printer::Kind::NameServer:
                     flush_name(buffer[i]);
+                    break;
                 case Printer::Kind::Truck:
                     flush_truck(buffer[i]);
+                    break;
                 case Printer::Kind::BottlingPlant:
                     flush_plant(buffer[i]);
+                    break;
                 case Printer::Kind::Student:
                     flush_student(buffer[i]);
+                    break;
                 case Printer::Kind::Vending:
                     flush_vending(buffer[i]);
+                    break;
                 case Printer::Kind::Courier:
                     flush_courier(buffer[i]);
+                    break;
             } // switch
             buffer[i].is_empty = true;                              // slot is flushed - now empty
         } // if
