@@ -8,11 +8,11 @@ class WATCard;
 
 _Task VendingMachine {
 	Printer & prt;
-	NameServer & nameServer;
+	NameServer & name_server;
 	unsigned int id;
-	unsigned int sodaCost; 
+	unsigned int soda_cost; 
 	unsigned int* items;
-    uCondition vmQueue;
+    uCondition vm_queue;
 	void main();
 	struct BuyInfo {
 		BottlingPlant::Flavours flavour;

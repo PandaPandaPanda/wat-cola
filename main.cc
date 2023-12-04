@@ -65,8 +65,8 @@ int main( int argc, char *argv[] ) {
   for (unsigned int id = 0; id < params.numVendingMachines; id+=1) {
       vmList[id] = new VendingMachine(prt, ns, id, params.sodaCost);
   }
-  // BottlingPlant bp(prt, ns, params.numVendingMachines, params.maxShippedPerFlavour,
-  //        params.maxStockPerFlavour, params.timeBetweenShipments);
+  BottlingPlant bp(prt, ns, params.numVendingMachines, params.maxShippedPerFlavour,
+         params.maxStockPerFlavour, params.timeBetweenShipments);
 
   Student* students[params.numStudents];
   for (unsigned int i = 0; i < params.numStudents; i++) {

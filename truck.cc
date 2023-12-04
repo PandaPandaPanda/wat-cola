@@ -59,12 +59,12 @@ void Truck::main() {
             unsigned int* machineInventory = machineList[curMachine]->inventory();
 
             PRINT({
-                int totalRemaining = 0;
+                int total_remaining = 0;
                 for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
-                    totalRemaining += cargo[i];
+                    total_remaining += cargo[i];
                 }
                 
-                prt.print(Printer::Truck, 'd', machineList[curMachine]->getId(), totalRemaining);
+                prt.print(Printer::Truck, 'd', machineList[curMachine]->getId(), total_remaining);
             })
             for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
                 unsigned int neededStock = maxStockPerFlavour - machineInventory[i];
@@ -80,12 +80,13 @@ void Truck::main() {
                 }
             }
             PRINT({
-                int totalUnfilled = 0;
+                int total_unfilled = 0;
                 for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
-                    totalUnfilled = maxStockPerFlavour - machineInventory[i];
+                    total_unfilled = maxStockPerFlavour - machineInventory[i];
                 }
-                
-                prt.print(Printer::Truck, 'U', machineList[curMachine]->getId(), totalUnfilled);
+                if (total_unfilled > 0) {
+                    prt.print(Printer::Truck, 'U', machineList[curMachine]->getId(), total_unfilled);
+                }
             })
             if (debug) {
                 cout << "restocked: ";
@@ -100,13 +101,14 @@ void Truck::main() {
                 cout << endl;
             }
             // delivery ended
+            machineList[curMachine]->restocked();
             PRINT({
-                int totalRemaining = 0;
+                int total_remaining = 0;
                 for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
-                    totalRemaining += cargo[i];
+                    total_remaining += cargo[i];
                 }
                 
-                prt.print(Printer::Truck, 'D', machineList[curMachine]->getId(), totalRemaining);
+                prt.print(Printer::Truck, 'D', machineList[curMachine]->getId(), total_remaining);
             })
             if (prng(100) == 42) {
                 PRINT(prt.print(Printer::Truck, 'W');)
