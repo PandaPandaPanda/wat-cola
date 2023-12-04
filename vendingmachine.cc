@@ -24,37 +24,50 @@ VendingMachine::BuyInfo::BuyInfo( BottlingPlant::Flavours flavour, WATCard & car
 void VendingMachine::main() {
     PRINT( prt.print(Printer::Vending, id, 'S', soda_cost);)
     for (;;) {
+        if (debug) cout << "VendingMachine "<< id << " ::main: before _Accept" << endl;
         _Accept(~VendingMachine) {
+            if (debug) cout << "VendingMachine "<< id << " ::main: destructor called" << endl;
             PRINT( prt.print(Printer::Vending, id, 'F');)
             break;
         } or _Accept(inventory) {
+            if (debug) cout << "VendingMachine "<< id << " ::main: inventory called" << endl;
             PRINT( prt.print(Printer::Vending, id, 'r');)
             // currently restocking
             _Accept(restocked);
+            if (debug) cout << "VendingMachine "<< id << " ::main: after restocked" << endl;
             PRINT( prt.print(Printer::Vending, id, 'R');)
         } or _Accept(buy) {
+            if (debug) cout << "VendingMachine "<< id << " ::main: buy called" << endl;
             BuyInfo buy_info = *(BuyInfo*)vm_queue.front();
             unsigned int balance = buy_info.card.getBalance();
             if (balance < soda_cost) {
+                if (debug) cout << "VendingMachine "<< id << " ::main: insufficient funds" << endl;
                 _Resume Funds() _At buy_info.student;
                 vm_queue.signalBlock();
+                if (debug) cout << "VendingMachine "<< id << " ::main: after Funds" << endl;
                 continue;
             }
             if (items[buy_info.flavour]==0) {
+                if (debug) cout << "VendingMachine "<< id << " ::main: out of stock" << endl;
                 _Resume Stock() _At buy_info.student;
                 vm_queue.signalBlock();
+                if (debug) cout << "VendingMachine "<< id << " ::main: after Stock" << endl;
                 continue;
             }
             items[buy_info.flavour]-=1;
             if (mprng(5) == 0) { // free soda
+                if (debug) cout << "VendingMachine "<< id << " ::main: free soda" << endl;
                 PRINT( prt.print(Printer::Vending, id, 'A');)
                 _Resume Free() _At buy_info.student;
                 vm_queue.signalBlock();
+                if (debug) cout << "VendingMachine "<< id << " ::main: after Free" << endl;
                 continue;
             } else {
+                if (debug) cout << "VendingMachine "<< id << " ::main: charged" << endl;
                 PRINT( prt.print(Printer::Vending, id, 'B', buy_info.flavour, items[buy_info.flavour]);)
                 buy_info.card.withdraw(soda_cost);
                 vm_queue.signalBlock();
+                if (debug) cout << "VendingMachine "<< id << " ::main: after charged" << endl;
             }
         }
     }

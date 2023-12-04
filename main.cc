@@ -85,6 +85,7 @@ int main( int argc, char *argv[] ) {
   delete ns;
   delete office;
   for (unsigned int i = 0; i < params.numVendingMachines; i+=1) {
+    if (debug) cout << "main: trying to delete vm " << i << endl;
     delete vmList[i];
     if (debug) cout << "main: deleting vm " << i << endl;
   }

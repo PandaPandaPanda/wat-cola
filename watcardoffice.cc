@@ -8,6 +8,12 @@ void WATCardOffice::main() {
   PRINT( prt.print( Printer::WATCardOffice, 'S' ); )
   for ( ; ; ) {
     _Accept( ~WATCardOffice ) {
+      // cleanup all job when shutting down
+      for ( ; !jobs.empty() ; ) {
+        delete jobs.front();
+        jobs.pop();
+      }
+
       break;
     } or _Accept( create ) {
       Job * new_job = jobs.back();
@@ -20,6 +26,7 @@ void WATCardOffice::main() {
       jobs.pop();
     }
   }
+
   PRINT( prt.print( Printer::WATCardOffice, 'F' ); )
 }
 
@@ -31,18 +38,16 @@ WATCardOffice::WATCardOffice( Printer & prt, Bank & bank, unsigned int numCourie
 } 
 
 WATCardOffice::~WATCardOffice() {
-  if (debug) {
-    cout << "deleting watcard office" << endl;
+  if (debug) { cout << "watcardoffice destructor" << endl; }
+  for ( unsigned int i = 0; i < numCouriers; i++) {
+    // manually unblock couriers
+    _Accept(requestWork);
   }
   for ( unsigned int i = 0; i < numCouriers; i++ ) {
     delete couriers[i];
   }
   delete[] couriers;
-
-  for ( ; !jobs.empty() ; ) {
-    delete jobs.front();
-    jobs.pop();
-  }
+  if (debug) { cout << " couriers deleted" << endl;}
 }
 
 WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount ) {
@@ -61,7 +66,10 @@ WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount
 }
 
 WATCardOffice::Job* WATCardOffice::requestWork() {
-  assert( !jobs.empty() );
+  if (debug) { cout << "request work" << endl; }
+  if ( jobs.empty() ) {
+    return nullptr;
+  }
   Job * job = jobs.front();
   // pop job in watcardoffice main
 
@@ -77,8 +85,14 @@ void WATCardOffice::Courier::main() {
     } _Else {
       /* caller courier blocks until a Job request is ready 
       since requestWork is a public member of task */
+      if (debug) { cout << "courier request work" << endl; }
       Job * job = office->requestWork();
-      assert( job );
+
+      // if no job, then watcardoffice is shutting down
+      if ( job == nullptr ) {
+        if(debug) { cout << "courier no job" << endl; }
+        break;
+      }
       
       PRINT( prt.print( Printer::Courier, id, 't', job->sid, job->amount ); )
       /* caller courier blocks until the bank has enough to withdraw and return */
