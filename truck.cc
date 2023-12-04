@@ -48,6 +48,8 @@ void Truck::main() {
                 }
             }
         } _Catch(BottlingPlant::Shutdown & e) {
+            cout << "TRUCK finished" << endl;
+            PRINT(prt.print(Printer::Truck, 'F');)
             return;
         }
         for (unsigned int servedVending = 0; servedVending < numVendingMachines; servedVending+=1) {
@@ -60,7 +62,6 @@ void Truck::main() {
                 for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
                     total_remaining += cargo[i];
                 }
-                
                 prt.print(Printer::Truck, 'd', machineList[curMachine]->getId(), total_remaining);
             })
             for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
@@ -117,8 +118,6 @@ void Truck::main() {
 
             curMachine = (1+curMachine) % numVendingMachines;
         }
-
     }
-    PRINT(prt.print(Printer::Truck, 'W');)
 }
 

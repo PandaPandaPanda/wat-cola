@@ -1,4 +1,5 @@
 #include "groupoff.h"
+#include <iostream>
 
 using namespace std;
 
@@ -8,6 +9,7 @@ Groupoff::Groupoff(Printer& prt, unsigned int numStudents, unsigned int sodaCost
     };
 
 Groupoff::~Groupoff() {
+    cout << "deleting groupoff" << endl;
     delete[] future_giftcards;
 }
 

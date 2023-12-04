@@ -25,6 +25,7 @@ void VendingMachine::main() {
     PRINT( prt.print(Printer::Vending, id, 'S', soda_cost);)
     for (;;) {
         _Accept(~VendingMachine) {
+            PRINT( prt.print(Printer::Vending, id, 'F');)
             break;
         } or _Accept(inventory) {
             PRINT( prt.print(Printer::Vending, id, 'r');)

@@ -31,6 +31,9 @@ WATCardOffice::WATCardOffice( Printer & prt, Bank & bank, unsigned int numCourie
 } 
 
 WATCardOffice::~WATCardOffice() {
+  if (debug) {
+    cout << "deleting watcard office" << endl;
+  }
   for ( unsigned int i = 0; i < numCouriers; i++ ) {
     delete couriers[i];
   }

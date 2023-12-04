@@ -1,4 +1,5 @@
 #include "parent.h"
+#include <iostream>
 
 // ==== Global debug
 bool debug = true;
@@ -9,10 +10,14 @@ using namespace std;
 Parent::Parent( Printer & prt, Bank & bank, unsigned int numStudents, unsigned int parentalDelay ):
   prt(prt), bank(bank), numStudents(numStudents), parentalDelay(parentalDelay) {}
 
+Parent::~Parent() {
+  if (debug) {cout << "parent destructor" << endl;}
+};
 void Parent::main() {
   PRINT(prt.print(Printer::Parent, 'S');)
   for (;;) {
     _Accept(~Parent) {
+      if (debug) {cout << "deleting parent";}
       break;
     } _Else {
       yield(parentalDelay);

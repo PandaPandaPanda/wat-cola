@@ -56,7 +56,7 @@ int main( int argc, char *argv[] ) {
   Printer prt(params.numStudents, params.numVendingMachines, params.numCouriers);
 
   Bank bank(params.numStudents);
-  Parent parent(prt, bank, params.numStudents, params.parentalDelay);
+  Parent* parent = new Parent(prt, bank, params.numStudents, params.parentalDelay);
   WATCardOffice office(prt, bank, params.numCouriers);
 
   Groupoff groupoff(prt, params.numStudents, params.sodaCost, params.groupoffDelay);
@@ -77,7 +77,6 @@ int main( int argc, char *argv[] ) {
     delete students[i];
     if (debug) cout << "main: deleting student " << i << endl;
   } // for
-
   delete bp;
   if (debug) cout << "main: deleting bottling plant" << endl;
   
@@ -85,4 +84,5 @@ int main( int argc, char *argv[] ) {
     delete vmList[i];
     if (debug) cout << "main: deleting vm " << i << endl;
   }
+  delete parent;
 } // main

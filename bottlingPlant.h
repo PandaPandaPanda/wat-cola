@@ -19,6 +19,7 @@ _Task BottlingPlant {
 	unsigned int timeBetweenShipments;
 	unsigned int * stock;
 	bool closing = false;
+	uCondition bp_queue;
 	void main();
   public:
 	enum Flavours { Blues_Black_Cherry, Classic_Cream_Soda, Rock_Root_Beer, Jazz_Lime, NUM_OF_FLAVOURS };	// flavours of soda (YOU DEFINE)

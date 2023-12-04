@@ -3,7 +3,7 @@ OUTPUT := OUTPUT
 CXX = u++                                  # compiler
 CXXFLAGS = -g -multi -Wall -Wextra -MMD -D"${OUTPUT}" # compiler flags
 ifeq ("${OUTPUT}","NOOUTPUT")
-	CXXFLAGS += -O2 -nodebug
+	CXXFLAGS += -nodebug
 endif
 MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}    # makefile name
 

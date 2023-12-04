@@ -1,6 +1,7 @@
 #include "bottlingPlant.h"
 #include "truck.h"
 #include "printer.h"
+#include <iostream>
 
 using namespace std;
 
@@ -15,58 +16,60 @@ BottlingPlant::BottlingPlant(Printer& prt, NameServer& nameServer, unsigned int 
 
 BottlingPlant::~BottlingPlant() {
     delete[] stock;
+    if (debug) {cout << "deleting truck" << endl;}
     delete truck;
 }
 
 void BottlingPlant::main() {
     PRINT(prt.print(Printer::BottlingPlant, 'S');)
     for (;;) {
-        yield(timeBetweenShipments);
-        if (debug) {cout << "production run: " << endl;}
-        for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
-            stock[i]=mprng(0, maxShippedPerFlavour);
-        }
-        if (debug) {
-            cout << "stock: ";
+        if (!closing) {
+            yield(timeBetweenShipments);
+            if (debug) {cout << "production run: " << endl;}
             for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
-                cout << stock[i] << " ";
+                stock[i]=mprng(0, maxShippedPerFlavour);
             }
-            cout << endl;
-        }
-        PRINT({
-            int totalProduced = 0;
-            for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
-                totalProduced += stock[i];
-            }
-            
-            prt.print(Printer::BottlingPlant, 'G', totalProduced);
-        })
-        _Accept(getShipment) {
-            if (closing) {
-                bool no_stock = true;
+            if (debug) {
+                cout << "stock: ";
                 for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
-                    if (stock[i]!=0) {
-                        no_stock = false;
-                        break;
-                    }
+                    cout << stock[i] << " ";
                 }
-                if (no_stock) {
-                    _Resume Shutdown() _At *truck;
-                    return;
+                cout << endl;
+            }
+            PRINT({
+                int totalProduced = 0;
+                for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
+                    totalProduced += stock[i];
                 }
+                
+                prt.print(Printer::BottlingPlant, 'G', totalProduced);
+            })
+        }
+        _Accept(getShipment) {
+            unsigned int* cargo = (unsigned int*)bp_queue.front();
+            bool no_stock = true;
+            for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
+                cargo[i] = stock[i];
+                if (stock[i]!=0) {
+                    no_stock = false;
+                }
+                stock[i] = 0;
+            }
+            if (no_stock && closing) {
+                cout << "raising shutdown at truck" << endl;
+                _Resume Shutdown() _At *truck;
+                bp_queue.signalBlock();
+                prt.print(Printer::BottlingPlant, 'F');
+                return;
             }
             prt.print(Printer::BottlingPlant, 'P');
-
+            bp_queue.signalBlock();
         } or _Accept(~BottlingPlant) {
             closing = true;
-            break;
         };
     }
-    prt.print(Printer::BottlingPlant, 'F');
 }
 
 void BottlingPlant::getShipment(unsigned int cargo[]) {
-    for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
-        cargo[i] = stock[i];
-    }
+    bp_queue.wait((uintptr_t)cargo);
 }

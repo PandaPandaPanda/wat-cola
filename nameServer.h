@@ -11,7 +11,7 @@ _Task NameServer {
 	unsigned int machine_cnt = 0;
 	VendingMachine** machines;
 	unsigned int* sid_to_machineid;
-	
+	uCondition ns_queue;
 	// buffer variables for storing param variables for task main
 	unsigned int cur_id;
 
