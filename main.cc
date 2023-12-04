@@ -57,32 +57,37 @@ int main( int argc, char *argv[] ) {
 
   Bank bank(params.numStudents);
   Parent* parent = new Parent(prt, bank, params.numStudents, params.parentalDelay);
-  WATCardOffice office(prt, bank, params.numCouriers);
+  WATCardOffice* office = new WATCardOffice(prt, bank, params.numCouriers);
 
   Groupoff groupoff(prt, params.numStudents, params.sodaCost, params.groupoffDelay);
-  NameServer ns(prt, params.numVendingMachines, params.numStudents);
+  NameServer *ns = new NameServer(prt, params.numVendingMachines, params.numStudents);
   VendingMachine* vmList[params.numVendingMachines];
   for (unsigned int id = 0; id < params.numVendingMachines; id+=1) {
-      vmList[id] = new VendingMachine(prt, ns, id, params.sodaCost);
+      vmList[id] = new VendingMachine(prt, *ns, id, params.sodaCost);
   }
-  BottlingPlant *bp = new BottlingPlant(prt, ns, params.numVendingMachines, params.maxShippedPerFlavour,
+  BottlingPlant *bp = new BottlingPlant(prt, *ns, params.numVendingMachines, params.maxShippedPerFlavour,
          params.maxStockPerFlavour, params.timeBetweenShipments);
 
   Student* students[params.numStudents];
   for (unsigned int i = 0; i < params.numStudents; i+=1) {
-    students[i] = new Student(prt, ns, office, groupoff, i, params.maxPurchases);
+    students[i] = new Student(prt, *ns, *office, groupoff, i, params.maxPurchases);
   } // for
+  if (debug) cout << "main: all created" << endl;
   // wait for students to finish
   for (unsigned int i = 0; i < params.numStudents; i+=1) {
     delete students[i];
     if (debug) cout << "main: deleting student " << i << endl;
   } // for
+  if (debug) cout << "main: deleting bp" << endl;
   delete bp;
   if (debug) cout << "main: deleting bottling plant" << endl;
   
+  delete ns;
+  delete office;
   for (unsigned int i = 0; i < params.numVendingMachines; i+=1) {
     delete vmList[i];
     if (debug) cout << "main: deleting vm " << i << endl;
   }
   delete parent;
+  if (debug) cout << "main: the end" << endl;
 } // main

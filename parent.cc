@@ -2,7 +2,7 @@
 #include <iostream>
 
 // ==== Global debug
-bool debug = true;
+bool debug = false;
 // ====
 
 using namespace std;

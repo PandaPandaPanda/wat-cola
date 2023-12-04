@@ -20,6 +20,7 @@ NameServer::NameServer( Printer & prt, unsigned int numVendingMachines, unsigned
     };
 
 NameServer::~NameServer() {
+    if (debug) {cout << uThisTask().getName() << " destructor called" << endl;}
     if (debug) { cout << "NameServer::~NameServer()" << endl;}
     delete[] machines; // delete array, vending machine itself is cleanup elsewhere
     delete[] sid_to_machineid;
@@ -31,6 +32,7 @@ void NameServer::main() {
     for (;;) {
         // all machines are registered before accepting calls to other members
         _Accept(~NameServer) {
+            if (debug) {cout << uThisTask().getName() << " " << endl;}
             break;
         } or _When(machine_cnt < numVendingMachines) _Accept(VMregister) {
             machine_cnt+=1;
@@ -49,6 +51,7 @@ void NameServer::main() {
             if (debug) {cout << "machine list" << endl;}
         }
     }
+    if (debug) { cout << "NameServer::main() finished" << endl; }
 
     PRINT( prt.print(Printer::NameServer, 'F'); )
 }
