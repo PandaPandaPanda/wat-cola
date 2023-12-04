@@ -56,21 +56,21 @@ int main( int argc, char *argv[] ) {
   Printer prt(params.numStudents, params.numVendingMachines, params.numCouriers);
 
   Bank bank(params.numStudents);
-  Parent* parent = new Parent(prt, bank, params.numStudents, params.parentalDelay);
-  WATCardOffice* office = new WATCardOffice(prt, bank, params.numCouriers);
+  Parent parent(prt, bank, params.numStudents, params.parentalDelay);
+  WATCardOffice office(prt, bank, params.numCouriers);
 
   Groupoff groupoff(prt, params.numStudents, params.sodaCost, params.groupoffDelay);
-  NameServer *ns = new NameServer(prt, params.numVendingMachines, params.numStudents);
-  VendingMachine* vmList[params.numVendingMachines];
+  NameServer ns(prt, params.numVendingMachines, params.numStudents);
+  uNoCtor<VendingMachine> vmList[params.numVendingMachines];
   for (unsigned int id = 0; id < params.numVendingMachines; id+=1) {
-      vmList[id] = new VendingMachine(prt, *ns, id, params.sodaCost);
+      vmList[id].ctor(prt, ns, id, params.sodaCost);
   }
-  BottlingPlant *bp = new BottlingPlant(prt, *ns, params.numVendingMachines, params.maxShippedPerFlavour,
+  BottlingPlant *bp = new BottlingPlant(prt, ns, params.numVendingMachines, params.maxShippedPerFlavour,
          params.maxStockPerFlavour, params.timeBetweenShipments);
 
   Student* students[params.numStudents];
   for (unsigned int i = 0; i < params.numStudents; i+=1) {
-    students[i] = new Student(prt, *ns, *office, groupoff, i, params.maxPurchases);
+    students[i] = new Student(prt, ns, office, groupoff, i, params.maxPurchases);
   } // for
   if (debug) cout << "main: all created" << endl;
   // wait for students to finish
@@ -82,13 +82,10 @@ int main( int argc, char *argv[] ) {
   delete bp;
   if (debug) cout << "main: deleting bottling plant" << endl;
   
-  delete ns;
-  delete office;
-  for (unsigned int i = 0; i < params.numVendingMachines; i+=1) {
-    if (debug) cout << "main: trying to delete vm " << i << endl;
-    delete vmList[i];
-    if (debug) cout << "main: deleting vm " << i << endl;
-  }
-  delete parent;
+  // for (unsigned int i = 0; i < params.numVendingMachines; i+=1) {
+  //   if (debug) cout << "main: trying to delete vm " << i << endl;
+  //   delete vmList[i];
+  //   if (debug) cout << "main: deleting vm " << i << endl;
+  // }
   if (debug) cout << "main: the end" << endl;
 } // main

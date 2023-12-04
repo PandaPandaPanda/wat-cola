@@ -14,9 +14,10 @@ void Student::main() {
   PRINT( prt.print(Printer::Student, id, 'S', fav_flavour, bottles_to_purchase);)
   
   // creates a gift card from Groupoff with a value of SodaCost
-  WATCard::FWATCard future_giftcard = groupoff.giftCard();
+  WATCard* card = nullptr;
+  future_giftcard = groupoff.giftCard();
   // creates a WATCard from the WATCardOffice with a $5 balance
-  WATCard::FWATCard future_watcard = cardOffice.create(id, 5);
+  future_watcard = cardOffice.create(id, 5);
   // obtains the location of a vending machine from the name serve
   VendingMachine* vm = nameServer.getMachine(id);
   PRINT( prt.print(Printer::Student, id, 'V', vm->getId());)
@@ -29,16 +30,19 @@ void Student::main() {
       // use the gift card first if both have money
       bool using_giftcard = false;
       _Select(future_giftcard) {
-        card = future_giftcard();
+        giftcard = future_giftcard();
+        card = giftcard;
         using_giftcard = true;
         if (debug) {cout << endl <<"Student " << id << " has received a giftcard" << endl;}
       } or _Select(future_watcard) {
         try {
-          card = future_watcard();
+          watcard = future_watcard();
+          card = watcard;
           if (debug) {cout << endl <<"Student " << id << " has received a watcard " << endl;}
         } catch (WATCardOffice::Lost &l) {
           // the student must create a new WATCard from the WATCardOffice with a $5 balance
           PRINT( prt.print(Printer::Student, id, 'L'); )
+          watcard = nullptr;
           future_watcard.reset();
           future_watcard = cardOffice.create(id, 5);
           continue; // re-attempt to purchase a soda without yielding as a purchase has not occurred.
@@ -98,3 +102,24 @@ Student::Student( Printer & prt, NameServer & nameServer, WATCardOffice & cardOf
   prt(prt), nameServer(nameServer), cardOffice(cardOffice), groupoff(groupoff), id(id), maxPurchases(maxPurchases) {
 }
 
+Student::~Student() {
+  if (giftcard!=nullptr) {
+    delete giftcard;
+  }
+  if (watcard!=nullptr) {
+    delete watcard;
+  }
+
+  _When(giftcard == nullptr) _Select(future_giftcard) {
+    giftcard = future_giftcard();
+    delete giftcard;
+  } or _When(watcard == nullptr) _Select(future_watcard) {
+    try {
+      watcard = future_watcard();
+      delete watcard;
+    } catch (WATCardOffice::Lost &l) {
+      // the student must create a new WATCard from the WATCardOffice with a $5 balance
+      PRINT( prt.print(Printer::Student, id, 'L'); )
+    }
+  } _Else {}
+}

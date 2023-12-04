@@ -25,12 +25,16 @@ _Task Student {
 	unsigned int id;
 	unsigned int maxPurchases;
 
-	WATCard * card;
+	WATCard* giftcard = nullptr;
+	WATCard* watcard = nullptr;
+	WATCard::FWATCard future_giftcard;
+	WATCard::FWATCard future_watcard;
 
 	void main();
   public:
 	Student( Printer & prt, NameServer & nameServer, WATCardOffice & cardOffice, Groupoff & groupoff,
 			 unsigned int id, unsigned int maxPurchases );
+	~Student();
 };
 
 #endif
