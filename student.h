@@ -1,6 +1,8 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 
+#include <uPRNG.h>
+
 #include "watcardoffice.h"
 #include "nameServer.h"
 #include "groupoff.h"
@@ -9,6 +11,8 @@
 #include <iostream>
 extern bool debug;
 // ====
+
+extern PRNG mprng;
 
 _Monitor Printer;
 _Task Groupoff;

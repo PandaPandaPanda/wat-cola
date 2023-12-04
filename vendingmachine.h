@@ -6,6 +6,8 @@ _Task NameServer;
 _Monitor Printer;
 class WATCard;
 
+extern PRNG mprng;
+
 _Task VendingMachine {
 	Printer & prt;
 	NameServer & name_server;

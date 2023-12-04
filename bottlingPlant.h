@@ -1,9 +1,13 @@
 #ifndef BOTTLINGPLANT_H
 #define BOTTLINGPLANT_H
 
+#include <uPRNG.h>
+
 _Task Truck;
 _Task NameServer;
 _Monitor Printer;
+
+extern PRNG mprng;
 
 _Task BottlingPlant {
 	Printer & prt;

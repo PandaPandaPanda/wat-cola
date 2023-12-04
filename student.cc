@@ -22,7 +22,7 @@ void Student::main() {
   PRINT( prt.print(Printer::Student, id, 'V', vm->getId());)
 
   for ( ;bottles_to_purchase > 0; ) {
-    yield(prng(1,10));
+    yield(mprng(1,10));
     for ( ;; ) {
       if (debug) {cout << endl << "Student " << id << " still need " << bottles_to_purchase << endl;}
       // to wait for money to be transferred either from the WATCardOffice to theirWATCard or from Groupoff to their gift card.
@@ -53,7 +53,7 @@ void Student::main() {
         // a free bottle of soda (which does not count as a purchased soda), 
         PRINT( prt.print(Printer::Student, id, 'A', fav_flavour, card->getBalance());)
         // 50% change the student watches an advertisement associated with it by yielding 4 times
-        if (prng(0,1) == 0) {
+        if (mprng(0,1) == 0) {
           yield(4);
           break;
         }

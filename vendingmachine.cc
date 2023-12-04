@@ -45,7 +45,7 @@ void VendingMachine::main() {
                 continue;
             }
             items[buy_info.flavour]-=1;
-            if (prng(5) == 0) { // free soda
+            if (mprng(5) == 0) { // free soda
                 PRINT( prt.print(Printer::Vending, id, 'A');)
                 _Resume Free() _At buy_info.student;
                 vm_queue.signalBlock();

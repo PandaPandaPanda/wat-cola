@@ -24,7 +24,7 @@ void BottlingPlant::main() {
         yield(timeBetweenShipments);
         if (debug) {cout << "production run: " << endl;}
         for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
-            stock[i]=prng(0, maxShippedPerFlavour);
+            stock[i]=mprng(0, maxShippedPerFlavour);
         }
         if (debug) {
             cout << "stock: ";
