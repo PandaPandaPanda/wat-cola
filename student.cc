@@ -27,9 +27,10 @@ void Student::main() {
       if (debug) {cout << endl << "Student " << id << " still need " << bottles_to_purchase << endl;}
       // to wait for money to be transferred either from the WATCardOffice to theirWATCard or from Groupoff to their gift card.
       // use the gift card first if both have money
+      bool using_giftcard = false;
       _Select(future_giftcard) {
         card = future_giftcard();
-        future_giftcard.reset(); // used gift card
+        using_giftcard = true;
         if (debug) {cout << endl <<"Student " << id << " has received a giftcard" << endl;}
       } or _Select(future_watcard) {
         try {
@@ -51,7 +52,7 @@ void Student::main() {
         }
       } _Catch(VendingMachine::Free &f) {
         // a free bottle of soda (which does not count as a purchased soda), 
-        PRINT( prt.print(Printer::Student, id, 'A', fav_flavour, card->getBalance());)
+        PRINT( prt.print(Printer::Student, id, using_giftcard ? 'a': 'A', fav_flavour, card->getBalance());)
         // 50% change the student watches an advertisement associated with it by yielding 4 times
         if (mprng(0,1) == 0) {
           yield(4);
@@ -80,7 +81,10 @@ void Student::main() {
       vending machine debits the WATCard and delivers a bottle of soda, 
       the student drinks it and attempts another purchase
       */
-      PRINT( prt.print(Printer::Student, id, 'B', fav_flavour, card->getBalance());)
+      PRINT( prt.print(Printer::Student, id, using_giftcard ? 'G': 'B', fav_flavour, card->getBalance());)
+      if (using_giftcard) {
+        future_giftcard.reset(); // used gift card
+      }
       bottles_to_purchase -= 1; // reduce only on regular purchase (not free sodas)
       break;
     }
