@@ -12,27 +12,21 @@ void Student::main() {
   PRINT( prt.print(Printer::Student, id, 'S', fav_flavour, bottles_to_purchase);)
   WATCard::FWATCard future_giftcard = groupoff.giftCard();
   WATCard::FWATCard future_watcard = cardOffice.create(id, 5);
-  if (debug) {cout << "student get machine " << nameServer.getMachine(id)->getId() << endl;} 
-  if (debug) {cout << "student get machine " << nameServer.getMachine(id)->getId() << endl;}
+  if (debug) {cout << endl << "student get machine " << nameServer.getMachine(id)->getId() << endl;} 
+  if (debug) {cout << endl << "student get machine " << nameServer.getMachine(id)->getId() << endl;}
 
   _Select(future_watcard) {
     try {
       card = future_watcard();
-      if (debug) {
-        cout << endl <<"Student " << id << " has received a card with balance " << card->getBalance() << endl;
-      }
+      if (debug) {cout << endl <<"Student " << id << " has received a watcard " << endl;}
     } catch (WATCardOffice::Lost &l) {
       PRINT( prt.print(Printer::Student, id, 'L'); )
-      if (debug) {
-        cout << endl << "Student " << id << " has lost his card" << endl;
-      }
+      if (debug) {cout << endl << "Student " << id << " has lost his card" << endl;}
     }
   }
   
   _Select(future_giftcard) {
-    if (debug) {
-      cout << endl <<"Student " << id << " has received a giftcard" << endl;
-    }
+    if (debug) {cout << endl <<"Student " << id << " has received a giftcard" << endl;}
   }
 
   // cardOffice.transfer(id, 5, card);
@@ -55,11 +49,11 @@ void Student::main() {
         break; // attempt purcahse another soda - also need to wait
       } _Catch(VendingMachine::Funds &f) {
         // add money
-        cout << "BROKE ALERT" << endl;
+        if (debug) {cout << endl << "BROKE ALERT" << endl;}
         continue; // didnt purchase - no wait
       } _Catch(VendingMachine::Stock &s) {
         vm = nameServer.getMachine(id);
-        cout << "STOCK ALERT" << endl;
+        if(debug) {cout << endl  << "STOCK ALERT" << endl;}
         continue; // didnt purchase - no wait
       }
       PRINT( prt.print(Printer::Student, id, 'B', fav_flavour, card->getBalance());)
