@@ -76,7 +76,6 @@ int main( int argc, char *argv[] ) {
   for (unsigned int i = 0; i < params.numStudents; i++) {
     delete students[i];
   } // for
-  delete[] students;
 
   // delete [] vmList;
 

@@ -21,15 +21,20 @@ void Student::main() {
   VendingMachine* vm = nameServer.getMachine(id);
   PRINT( prt.print(Printer::Student, id, 'V', vm->getId());)
 
-  _Select(future_watcard) {
-    try {
-      card = future_watcard();
-      if (debug) {cout << endl <<"Student " << id << " has received a watcard " << endl;}
-    } catch (WATCardOffice::Lost &l) {
-      PRINT( prt.print(Printer::Student, id, 'L'); )
-      if (debug) {cout << endl << "Student " << id << " has lost his card" << endl;}
+  for (;;) {
+    future_watcard = cardOffice.create(id, 5);
+    _Select(future_watcard) {
+      try {
+        card = future_watcard();
+        if (debug) {cout << endl <<"Student " << id << " has received a watcard " << endl;}
+        break;
+      } catch (WATCardOffice::Lost &l) {
+        PRINT( prt.print(Printer::Student, id, 'L'); )
+        if (debug) {cout << endl << "Student " << id << " has lost his card" << endl;}
+      }
     }
-  } or _Select(future_giftcard) {
+  }
+  _Select(future_giftcard) {
     if (debug) {cout << endl <<"Student " << id << " has received a giftcard" << endl;}
   }
 
