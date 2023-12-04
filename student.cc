@@ -19,6 +19,9 @@ void Student::main() {
     }
   }
 
+  if (debug) {cout << nameServer.getMachine(id)->getId() << endl;}
+  if (debug) {cout << nameServer.getMachine(id)->getId() << endl;}
+
   // cardOffice.transfer(id, 5, card);
   while (true) {}
 }

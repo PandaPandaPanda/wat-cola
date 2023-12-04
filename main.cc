@@ -61,10 +61,10 @@ int main( int argc, char *argv[] ) {
 
   Groupoff groupoff(prt, params.numStudents, params.sodaCost, params.groupoffDelay);
   NameServer ns(prt, params.numVendingMachines, params.numStudents);
-  // VendingMachine* vmList[params.numVendingMachines];
-  // for (unsigned int id = 0; id < params.numVendingMachines; id+=1) {
-  //     vmList[id] = new VendingMachine(prt, ns, id, params.sodaCost);
-  // }
+  VendingMachine* vmList[params.numVendingMachines];
+  for (unsigned int id = 0; id < params.numVendingMachines; id+=1) {
+      vmList[id] = new VendingMachine(prt, ns, id, params.sodaCost);
+  }
   // BottlingPlant bp(prt, ns, params.numVendingMachines, params.maxShippedPerFlavour,
   //        params.maxStockPerFlavour, params.timeBetweenShipments);
 

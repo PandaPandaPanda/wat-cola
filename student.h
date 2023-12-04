@@ -2,9 +2,14 @@
 #define STUDENT_H
 
 #include "watcardoffice.h"
+#include "nameServer.h"
+
+// ==== Global debug
+#include <iostream>
+extern bool debug;
+// ====
 
 _Monitor Printer;
-_Task NameServer;
 _Task Groupoff;
 
 _Task Student {
