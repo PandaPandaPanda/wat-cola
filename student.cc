@@ -3,27 +3,33 @@
 using namespace std;
 
 void Student::main() {
-  WATCard::FWATCard future_card = cardOffice.create(id, 5);
+  WATCard::FWATCard future_giftcard = groupoff.giftCard();
+  WATCard::FWATCard future_watcard = cardOffice.create(id, 5);
 
-  _Select(future_card) {
+  if (debug) {cout << "student get machine " << nameServer.getMachine(id)->getId() << endl;} 
+  if (debug) {cout << "student get machine " << nameServer.getMachine(id)->getId() << endl;}
+
+  _Select(future_watcard) {
     try {
-      card = future_card();
+      card = future_watcard();
       if (debug) {
-        cout << "Student " << id << " has received a card with balance " << card->getBalance() << endl;
+        cout << endl <<"Student " << id << " has received a card with balance " << card->getBalance() << endl;
       }
     } catch (WATCardOffice::Lost) {
       PRINT( prt.print(Printer::Student, id, 'L'); )
       if (debug) {
-        cout << "Student " << id << " has lost his card" << endl;
+        cout << endl << "Student " << id << " has lost his card" << endl;
       }
     }
   }
+  
+  _Select(future_giftcard) {
+    if (debug) {
+      cout << endl <<"Student " << id << " has received a giftcard" << endl;
+    }
+  }
 
-  if (debug) {cout << nameServer.getMachine(id)->getId() << endl;}
-  if (debug) {cout << nameServer.getMachine(id)->getId() << endl;}
-
-  // cardOffice.transfer(id, 5, card);
-  while (true) {}
+  while(true) {}
 }
 
 Student::Student( Printer & prt, NameServer & nameServer, WATCardOffice & cardOffice, Groupoff & groupoff,

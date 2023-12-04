@@ -1,19 +1,25 @@
 #ifndef GROUPOFF_H
 #define GROUPOFF_H
 
-#include "watcard.h"
+#include <uPRNG.h>
 
-_Monitor Printer;
+#include "watcard.h"
+#include "printer.h"
+
+extern PRNG mprng;
 
 _Task Groupoff {
 	Printer& prt;
 	unsigned int numStudents;
 	unsigned int sodaCost;
 	unsigned int groupoffDelay;
-	WATCard::FWATCard future;
+	unsigned int cards_cnt;
+	WATCard::FWATCard* future_giftcards;
+
 	void main();
   public:
 	Groupoff( Printer & prt, unsigned int numStudents, unsigned int sodaCost, unsigned int groupoffDelay );
+	~Groupoff();
 	WATCard::FWATCard giftCard();
 };
 

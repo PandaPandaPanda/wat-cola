@@ -3,6 +3,7 @@
 
 #include "watcardoffice.h"
 #include "nameServer.h"
+#include "groupoff.h"
 
 // ==== Global debug
 #include <iostream>
