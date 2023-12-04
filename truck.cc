@@ -48,7 +48,7 @@ void Truck::main() {
                 }
             }
         } _Catch(BottlingPlant::Shutdown & e) {
-            cout << "TRUCK finished" << endl;
+            if(debug){cout << "TRUCK finished" << endl;}
             PRINT(prt.print(Printer::Truck, 'F');)
             return;
         }

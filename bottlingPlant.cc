@@ -56,7 +56,7 @@ void BottlingPlant::main() {
                 stock[i] = 0;
             }
             if (no_stock && closing) {
-                cout << "raising shutdown at truck" << endl;
+                if(debug){cout << "raising shutdown at truck" << endl;}
                 _Resume Shutdown() _At *truck;
                 bp_queue.signalBlock();
                 prt.print(Printer::BottlingPlant, 'F');
