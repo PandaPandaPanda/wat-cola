@@ -45,7 +45,7 @@ void NameServer::main() {
             sid_to_machineid[cur_id] = (sid_to_machineid[cur_id] + 1) % numVendingMachines;
         } or _When(machine_cnt == numVendingMachines) _Accept(getMachineList) {
             if (debug) {cout << "machine list" << endl;}
-        } _Else {}
+        }
     }
 
     PRINT( prt.print(Printer::NameServer, 'F'); )
