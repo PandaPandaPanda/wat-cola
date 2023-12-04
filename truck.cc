@@ -50,7 +50,7 @@ void Truck::main() {
         } _Catch(BottlingPlant::Shutdown & e) {
             return;
         }
-        for (int servedVending = 0; servedVending < numVendingMachines; servedVending+=1) {
+        for (unsigned int servedVending = 0; servedVending < numVendingMachines; servedVending+=1) {
             bool noCargo = true;
             cout << "calling inventory" << endl;
             for (int i = 0; i < 3; i+=1) {
