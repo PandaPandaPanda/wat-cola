@@ -15,6 +15,7 @@ BottlingPlant::BottlingPlant(Printer& prt, NameServer& nameServer, unsigned int 
 
 BottlingPlant::~BottlingPlant() {
     delete[] stock;
+    delete truck;
 }
 
 void BottlingPlant::main() {

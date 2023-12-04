@@ -7,7 +7,7 @@ ifeq ("${OUTPUT}","NOOUTPUT")
 endif
 MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}    # makefile name
 
-OBJECTS = main.o config.o bank.o parent.o printer.o nameServer.o vendingmachine.o truck.o plant.o watcardoffice.o watcard.o student.o groupoff.o # list of object files
+OBJECTS = main.o config.o bank.o parent.o printer.o nameServer.o vendingmachine.o truck.o bottlingPlant.o watcardoffice.o watcard.o student.o groupoff.o # list of object files
 EXEC = wat-cola
 
 DEPENDS = ${OBJECTS:.o=.d}                 # substitute ".o" with ".d"
