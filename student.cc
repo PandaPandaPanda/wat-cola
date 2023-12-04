@@ -30,6 +30,7 @@ void Student::main() {
       _Select(future_giftcard) {
         card = future_giftcard();
         future_giftcard.reset(); // used gift card
+        future_giftcard.cancel(); // attempt to stop server and clients from usage
         if (debug) {cout << endl <<"Student " << id << " has received a giftcard" << endl;}
       } or _Select(future_watcard) {
         try {
@@ -38,7 +39,8 @@ void Student::main() {
         } catch (WATCardOffice::Lost &l) {
           // the student must create a new WATCard from the WATCardOffice with a $5 balance
           PRINT( prt.print(Printer::Student, id, 'L'); )
-          delete future_watcard();
+          future_watcard.reset();
+          future_watcard.cancel(); // attempt to stop server and clients from usage
           future_watcard = cardOffice.create(id, 5);
           continue; // re-attempt to purchase a soda without yielding as a purchase has not occurred.
         }

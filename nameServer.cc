@@ -10,7 +10,7 @@ using namespace std;
 
 NameServer::NameServer( Printer & prt, unsigned int numVendingMachines, unsigned int numStudents )
     : prt(prt), numVendingMachines(numVendingMachines), numStudents(numStudents) {
-        machines = new VendingMachine*[numVendingMachines]();
+        machines = new VendingMachine*[numVendingMachines];
         
         sid_to_machineid = new unsigned int[numStudents];
         // logically distributing the students evenly across the vending machines in a round-robin fashion
@@ -20,6 +20,7 @@ NameServer::NameServer( Printer & prt, unsigned int numVendingMachines, unsigned
     };
 
 NameServer::~NameServer() {
+    if (debug) { cout << "NameServer::~NameServer()" << endl;}
     delete[] machines; // delete array, vending machine itself is cleanup elsewhere
     delete[] sid_to_machineid;
 }
