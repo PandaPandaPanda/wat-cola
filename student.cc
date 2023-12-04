@@ -7,13 +7,19 @@ using namespace std;
 
 void Student::main() {
 
-  int bottles_to_purchase = prng(1, maxPurchases);
-  BottlingPlant::Flavours fav_flavour = (BottlingPlant::Flavours)prng(0, BottlingPlant::Flavours::NUM_OF_FLAVOURS);
+  // begins by selecting a random number of bottles to purchase [1, MaxPurchases], a random favourite flavour [0, 3]
+  int bottles_to_purchase = mprng(1, maxPurchases);
+  BottlingPlant::Flavours fav_flavour = (BottlingPlant::Flavours)mprng(0, BottlingPlant::Flavours::NUM_OF_FLAVOURS-1);
+  
   PRINT( prt.print(Printer::Student, id, 'S', fav_flavour, bottles_to_purchase);)
+  
+  // creates a gift card from Groupoff with a value of SodaCost
   WATCard::FWATCard future_giftcard = groupoff.giftCard();
+  // creates a WATCard from the WATCardOffice with a $5 balance
   WATCard::FWATCard future_watcard = cardOffice.create(id, 5);
-  if (debug) {cout << endl << "student get machine " << nameServer.getMachine(id)->getId() << endl;} 
-  if (debug) {cout << endl << "student get machine " << nameServer.getMachine(id)->getId() << endl;}
+  // obtains the location of a vending machine from the name serve
+  VendingMachine* vm = nameServer.getMachine(id);
+  PRINT( prt.print(Printer::Student, id, 'V', vm->getId());)
 
   _Select(future_watcard) {
     try {
@@ -23,16 +29,11 @@ void Student::main() {
       PRINT( prt.print(Printer::Student, id, 'L'); )
       if (debug) {cout << endl << "Student " << id << " has lost his card" << endl;}
     }
-  }
-  
-  _Select(future_giftcard) {
+  } or _Select(future_giftcard) {
     if (debug) {cout << endl <<"Student " << id << " has received a giftcard" << endl;}
   }
 
-  // cardOffice.transfer(id, 5, card);
-  VendingMachine* vm = nameServer.getMachine(id);
-  PRINT( prt.print(Printer::Student, id, 'V', vm->getId());)
-  for (;bottles_to_purchase > 0;) {
+  for ( ;bottles_to_purchase > 0; ) {
     yield(prng(1,10));
     for ( ;; ) {
       try{

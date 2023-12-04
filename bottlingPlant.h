@@ -17,7 +17,7 @@ _Task BottlingPlant {
 	bool closing = false;
 	void main();
   public:
-	enum Flavours { COLA, PEPSI, RED_BULL, SPRITE, CANADA_DRY, MATCHA, COFFEE, NUM_OF_FLAVOURS };	// flavours of soda (YOU DEFINE)
+	enum Flavours { Blues_Black_Cherry, Classic_Cream_Soda, Rock_Root_Beer, Jazz_Lime, NUM_OF_FLAVOURS };	// flavours of soda (YOU DEFINE)
 	_Event Shutdown {};					// shutdown plant
 	BottlingPlant( Printer & prt, NameServer & nameServer, unsigned int numVendingMachines,
 				 unsigned int maxShippedPerFlavour, unsigned int maxStockPerFlavour,
