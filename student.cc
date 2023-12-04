@@ -11,19 +11,24 @@ void Student::main() {
   BottlingPlant::Flavours fav_flavour = (BottlingPlant::Flavours)prng(0, BottlingPlant::Flavours::NUM_OF_FLAVOURS);
   PRINT( prt.print(Printer::Student, id, 'S', fav_flavour, bottles_to_purchase);)
   WATCard::FWATCard future_giftcard = groupoff.giftCard();
-  WATCard::FWATCard future_watcard = cardOffice.create(id, 5);
+  WATCard::FWATCard future_watcard;
   if (debug) {cout << endl << "student get machine " << nameServer.getMachine(id)->getId() << endl;} 
   if (debug) {cout << endl << "student get machine " << nameServer.getMachine(id)->getId() << endl;}
 
-  _Select(future_watcard) {
-    try {
-      card = future_watcard();
-      if (debug) {cout << endl <<"Student " << id << " has received a watcard " << endl;}
-    } catch (WATCardOffice::Lost &l) {
-      PRINT( prt.print(Printer::Student, id, 'L'); )
-      if (debug) {cout << endl << "Student " << id << " has lost his card" << endl;}
+  for (;;) {
+    future_watcard = cardOffice.create(id, 5);
+    _Select(future_watcard) {
+      try {
+        card = future_watcard();
+        if (debug) {cout << endl <<"Student " << id << " has received a watcard " << endl;}
+        break;
+      } catch (WATCardOffice::Lost &l) {
+        PRINT( prt.print(Printer::Student, id, 'L'); )
+        if (debug) {cout << endl << "Student " << id << " has lost his card" << endl;}
+      }
     }
   }
+
   
   _Select(future_giftcard) {
     if (debug) {cout << endl <<"Student " << id << " has received a giftcard" << endl;}
