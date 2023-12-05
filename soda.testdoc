@@ -6,20 +6,39 @@ USER INTERFACE TESTING
     This focuses on testing the command line argument processing for the program.
 
     TEST 1:
+    -------
+        ./soda ""
+        ./soda "soda.config" 0
+        ./soda "soda.config" 0 1
+        ./soda "soda.config" 1 0
+        ./soda 1 "soda.config" 2
 
+        ./soda "soda.config" 1 2
+        ./soda "soda.config" d d
+        ./soda d d d
+        ./soda d d
+        ./soda d 1
+        ./soda
 
+    TESTING
+        the first half are invalid and is not expected to run,
+        output message indicating the correct invokation or indicating the config file doesn't exist
 
-        TESTING
+        the second half are valid and is expected to run
 
-
-        ANALYSIS
+    ANALYSIS
+        the first half of test are invalid as in they either have non-positive vakye in incorrect param order,
+        which are incorret and will not run and prints usage prompt
+        
+        the second half of the test are valid input using either explicit value or d (default), 
+        these should start the program running
 
 This concludes user interface testing ------------------------------------------------------------------
 
 
 ALGORITHM TESTING
 
-    TEST 1:
+    TEST 2:
     -------
     DATA DESCRIPTION
     The input file used is "test.txt".
