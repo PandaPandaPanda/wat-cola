@@ -40,11 +40,23 @@ ALGORITHM TESTING
 
     TEST 2:
     -------
+    soda.config
+        SodaCost               3
+        NumStudents            1
+        MaxPurchases           10
+        NumVendingMachines     10
+        MaxStockPerFlavour     1
+        MaxShippedPerFlavour   4
+        TimeBetweenShipments   30
+        GroupoffDelay          20
+        ParentalDelay          7
+        NumCouriers            4
+
     DATA DESCRIPTION
-    The input file used is "test.txt".
-    The contents of the file, with each line numbered, are:
 
     TESTING
 
 
     ANALYSIS
+        having a lot of machine with low soda capacity, truck is also slow.
+        Student is expect to hop between machine to find soda
