@@ -95,26 +95,3 @@ Student::Student( Printer & prt, NameServer & nameServer, WATCardOffice & cardOf
   unsigned int id, unsigned int maxPurchases ) : 
   prt(prt), nameServer(nameServer), cardOffice(cardOffice), groupoff(groupoff), id(id), maxPurchases(maxPurchases) {
 }
-
-Student::~Student() {
-  if (giftcard!=nullptr) {
-    delete giftcard;
-  }
-  if (watcard!=nullptr) {
-    delete watcard;
-  }
-
-  _When(giftcard == nullptr) _Select(future_giftcard) {
-    giftcard = future_giftcard();
-    delete giftcard;
-  }
-  _When(watcard == nullptr) _Select(future_watcard) {
-    try {
-      watcard = future_watcard();
-      delete watcard;
-    } catch (WATCardOffice::Lost &l) {
-      // the student must create a new WATCard from the WATCardOffice with a $5 balance
-      PRINT( prt.print(Printer::Student, id, 'L'); )
-    }
-  }
-}
