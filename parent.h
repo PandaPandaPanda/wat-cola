@@ -12,8 +12,8 @@ extern PRNG mprng;
 _Task Parent {
 	Printer & prt;
 	Bank & bank;
-	unsigned int numStudents;
-	unsigned int parentalDelay;
+	unsigned int numStudents;  
+	unsigned int parentalDelay; // delay between cash deposits
 	void main();
   public:
 	Parent( Printer & prt, Bank & bank, unsigned int numStudents, unsigned int parentalDelay );

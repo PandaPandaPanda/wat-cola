@@ -41,8 +41,8 @@ void Student::main() {
           future_watcard.reset();
           future_watcard = cardOffice.create(id, 5);
           continue; // re-attempt to purchase a soda without yielding as a purchase has not occurred.
-        }
-      }
+        } // _Catch
+      } // _Select
 
       try{
         _Enable{
@@ -73,7 +73,7 @@ void Student::main() {
         vm = nameServer.getMachine(id);
         PRINT( prt.print(Printer::Student, id, 'V', vm->getId());)
         continue; // didnt purchase - no wait
-      }
+      } // try
       /*
       vending machine debits the WATCard and delivers a bottle of soda, 
       the student drinks it and attempts another purchase
@@ -87,9 +87,11 @@ void Student::main() {
     }
   }
 
+  // cleanup giftcard
   if (giftcard != nullptr) {
     delete giftcard;
   }
+  // wait for giftcard if didn't arrive, then delete it
   _When(giftcard == nullptr) _Select(future_giftcard) {
     delete future_giftcard();
   }

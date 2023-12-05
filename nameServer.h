@@ -6,11 +6,12 @@
 
 _Task NameServer {
 	Printer & prt;
-	unsigned int numVendingMachines;
+	unsigned int numVendingMachines; 
 	unsigned int numStudents;
 	unsigned int machine_cnt = 0;
-	VendingMachine** machines;
-	unsigned int* sid_to_machineid;
+	VendingMachine** machines; 			// list of pointers to vending machines
+	unsigned int* sid_to_machineid; // map student id to machine id
+	
 	// buffer variables for storing param variables for task main
 	unsigned int cur_id;
 

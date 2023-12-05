@@ -10,7 +10,7 @@ NameServer::NameServer( Printer & prt, unsigned int numVendingMachines, unsigned
         // logically distributing the students evenly across the vending machines in a round-robin fashion
         for (unsigned int i = 0; i < numStudents; i++) {
             sid_to_machineid[i] = i % numVendingMachines;
-        }
+        } // for
 } // NameServer::NameServer
 
 NameServer::~NameServer() {
@@ -38,8 +38,8 @@ void NameServer::main() {
             PRINT( prt.print(Printer::NameServer, 'N', cur_id, sid_to_machineid[cur_id]);)
             sid_to_machineid[cur_id] = (sid_to_machineid[cur_id] + 1) % numVendingMachines;
         } or _When(machine_cnt == numVendingMachines) _Accept(getMachineList) {
-        }
-    }
+        } // _Accept
+    } // for
 
     PRINT( prt.print(Printer::NameServer, 'F'); )
 } // NameServer::main

@@ -12,9 +12,9 @@ _Task Groupoff {
 	Printer& prt;
 	unsigned int numStudents;
 	unsigned int sodaCost;
-	unsigned int groupoffDelay;
-	unsigned int cards_cnt;
-	WATCard::FWATCard* future_giftcards;
+	unsigned int groupoffDelay; 					// delay between giftcard distribution
+	unsigned int cards_cnt; 							// number of giftcards created
+	WATCard::FWATCard* future_giftcards; // array of giftcard futures
 
 	void main();
   public:

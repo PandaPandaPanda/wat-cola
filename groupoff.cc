@@ -5,11 +5,11 @@ using namespace std;
 Groupoff::Groupoff(Printer& prt, unsigned int numStudents, unsigned int sodaCost, unsigned int groupoffDelay)
     : prt(prt), numStudents(numStudents), sodaCost(sodaCost), groupoffDelay(groupoffDelay) {
         future_giftcards = new WATCard::FWATCard[numStudents];
-    };
+}; // Groupoff::Groupoff
 
 Groupoff::~Groupoff() {
     delete[] future_giftcards;
-}
+} // Groupoff::~Groupoff
 
 void Groupoff::main() {
     prt.print(Printer::Groupoff, 'S');
@@ -17,8 +17,8 @@ void Groupoff::main() {
     for (unsigned i = 0; i < numStudents; i++) {
         _Accept(giftCard) {
             cards_cnt+=1;
-        }
-    }
+        } // _Accept
+    } // for
 
     // periodically creates and puts a real WATCard with value SodaCost into a random future gift-card
     for (unsigned int i = 0; i < numStudents; i++) {
@@ -42,14 +42,14 @@ void Groupoff::main() {
             PRINT(prt.print(Printer::Groupoff, 'D', giftcard->getBalance());)
 
             future_giftcard.delivery(giftcard); // put the giftcard into the future
-        }
-    }
+        } // _Accept
+    } // for
 
     prt.print(Printer::Groupoff, 'F');
-}
+} // Groupoff::main
 
 WATCard::FWATCard Groupoff::giftCard() {
     WATCard::FWATCard future_giftcard;
     future_giftcards[cards_cnt] = future_giftcard;
     return future_giftcard;
-}
+} // Groupoff::giftCard
