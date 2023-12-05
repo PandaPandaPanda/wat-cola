@@ -20,6 +20,22 @@
 using namespace std;
 
 PRNG mprng; // my prng
+struct cmd_error {};
+
+void output_usage(char* exec_cmd) {                                                         // output usage
+    cerr << "Usage: " << exec_cmd << "[ config-file | 'd' [ seed (> 0) | 'd' [ processors (> 0) | 'd' ] ] ]" << endl;
+} // output_usage
+
+void parse_and_convert(int &arg, char * argv[], int argv_index) {
+    int using_default = 0;                                                              
+    using_default = !strcmp( argv[argv_index], "d" );
+    if (!using_default) {
+        arg = convert( argv[argv_index] );                                                  // convert specified arg
+        if ( arg <= 0 ) {                                                                   // all arg for this question must be > 0 
+            throw cmd_error();
+        } // if
+    } // if
+} // parse_and_convert
 
 int main( int argc, char *argv[] ) {
   const string DefaultConfigFile = "soda.config";  // global defaults
@@ -30,20 +46,22 @@ int main( int argc, char *argv[] ) {
   int seed = DefaultSeed; // default seed value
   int processors = DefaultProcessors; // default processors
 
-  struct cmd_error {};
   try {
     switch(argc) {
-      case 4: processors = convert(argv[3]); if (processors <= 0) { throw cmd_error(); };
+      case 4: parse_and_convert(processors, argv, 3);
       // fallthrough
-      case 3: seed = convert(argv[2]); if (seed <= 0) { throw cmd_error(); };
+      case 3: parse_and_convert(seed, argv, 2);
       // fallthrough
-      case 2: configFile = argv[1];
+      case 2: 
+        if (strcmp( argv[1], "d" )) {
+          configFile = argv[1];
+        }
       // fallthrough
       case 1: break;
       default: throw cmd_error();
     }
   } catch (...) {
-    cout << "Usage: " << argv[0] << "[ config-file | 'd' [ seed (> 0) | 'd' [ processors (> 0) | 'd' ] ] ]" << endl;
+    output_usage(argv[0]);
     exit( EXIT_FAILURE );							// TERMINATE
   } // try
 

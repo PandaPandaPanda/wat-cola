@@ -2,11 +2,13 @@
 #define WATCARDOFFICE_H
 
 #include <queue>
+#include <uPRNG.h>
 
 #include "watcard.h"
 #include "bank.h"
 #include "printer.h"
 
+extern PRNG mprng;
 
 _Task WATCardOffice {
 	struct Job {										// marshalled arguments and return future
