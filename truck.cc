@@ -20,7 +20,7 @@ Truck::~Truck() {
 void Truck::main() {
     PRINT(prt.print(Printer::Truck, 'S');)
     for(;;) {
-        yield(prng(0,10));
+        yield(mprng(0,10));
         try {
             _Enable {
                 if (debug) {
@@ -108,7 +108,7 @@ void Truck::main() {
                 
                 prt.print(Printer::Truck, 'D', machineList[curMachine]->getId(), total_remaining);
             })
-            if (prng(100) == 0) {
+            if (mprng(100) == 0) {
                 PRINT(prt.print(Printer::Truck, 'W');)
                 yield(10);
             }
