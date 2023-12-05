@@ -17,9 +17,9 @@ _Task Truck {
 	BottlingPlant & plant;
 	unsigned int numVendingMachines;
 	unsigned int maxStockPerFlavour;
-	unsigned int* cargo;
-	VendingMachine ** machineList;
-	int curMachine = 0;
+	unsigned int* cargo;				// truck cargo - contains inventory for each flavor
+	VendingMachine ** machineList;		// list pointers to all vending machines
+	int curMachine = 0;					// id of current machine being served
 	void main();
   public:
 	Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant,

@@ -13,13 +13,13 @@ _Task VendingMachine {
 	NameServer & name_server;
 	unsigned int id;
 	unsigned int soda_cost; 
-	unsigned int* items;
-    uCondition vm_queue;
+	unsigned int* items;				// vending machine inventory
+    uCondition vm_queue;				// shadow queue to pass BottlingPlant::buy arguments into main
 	void main();
-	struct BuyInfo {
+	struct BuyInfo {					// used to pass BottlingPlant::buy arguments into main for concurrency
 		BottlingPlant::Flavours flavour;
 		WATCard & card;
-		uBaseTask & student;
+		uBaseTask & student;			// student task that called buy (for main to raise exception on)
 		BuyInfo( BottlingPlant::Flavours flavour, WATCard & card, uBaseTask & student);
 	};
   public:

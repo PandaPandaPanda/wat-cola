@@ -14,11 +14,11 @@ _Task WATCardOffice {
 	struct Job {										// marshalled arguments and return future
 		unsigned int sid;
     unsigned int amount;
-    WATCard* card; 								// actual card carried
-		WATCard::FWATCard result;			// return future
+    WATCard* card; 										// actual card carried
+		WATCard::FWATCard result;						// return future
 		Job( unsigned int sid, unsigned int amount, WATCard* card ) : sid( sid ), amount( amount ), card( card ) {}
 	};
-	_Task Courier { // communicates with bank
+	_Task Courier { 									// communicates with bank
 		Printer & prt;
 		Bank & bank;
 		WATCardOffice * office;
@@ -37,7 +37,7 @@ _Task WATCardOffice {
 
 	void main();
   public:
-	_Event Lost {};							// lost WATCard
+	_Event Lost {};										// lost WATCard
 	WATCardOffice( Printer & prt, Bank & bank, unsigned int numCouriers );
 	~WATCardOffice();
 	WATCard::FWATCard create( unsigned int sid, unsigned int amount ) __attribute__(( warn_unused_result ));

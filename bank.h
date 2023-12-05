@@ -8,7 +8,7 @@ extern bool debug;
 
 _Monitor Bank {
 	unsigned int numStudents;
-	unsigned int* accounts;
+	unsigned int* accounts;				// keeps track of balance of every student's account
   public:
 	Bank( unsigned int numStudents );
 	void deposit( unsigned int id, unsigned int amount );
