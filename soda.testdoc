@@ -43,20 +43,85 @@ ALGORITHM TESTING
     soda.config
         SodaCost               3
         NumStudents            1
-        MaxPurchases           10
-        NumVendingMachines     10
+        MaxPurchases           1
+        NumVendingMachines     5
         MaxStockPerFlavour     1
         MaxShippedPerFlavour   4
-        TimeBetweenShipments   30
+        TimeBetweenShipments   20
         GroupoffDelay          20
         ParentalDelay          7
         NumCouriers            4
 
+
     DATA DESCRIPTION
-
+        We are using a long shipment time to demonstrate the student's behavior when they cannot find a soda in
+        any vending machine, as none of the vneding machines will be stocked
     TESTING
-
-
+        The following are part of the test output that we will analyze
+Parent  Gropoff WATOff  Names   Truck   Plant   Stud0   Mach0   Mach1   Mach2   Mach3   Mach4   Cour0   Cour1   Cour2   Cour3
+******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
+Uninteresting output removed
+                        R5      S       S       S1,1                                    S3
+D0,1            C0,5    N0,0                    V0                                              t0,5
+D0,3            W       N0,1                    V1                                              T0,5
+D0,1                    N0,2                    V2
+                        N0,3                    V3
+                        N0,4            G5      V4
+        D3                                      V0
+D0,3    F               N0,0    P5      P       V1
+                        N0,1    d0,5            V2      r
+Uninteresting output removed
     ANALYSIS
-        having a lot of machine with low soda capacity, truck is also slow.
-        Student is expect to hop between machine to find soda
+        We can see that since none of the machines have been restocked due to the long shipment time, the student 
+        must constantly query the name server for new vending machines in hopes of finding one with their favorite
+        flavour. This behavior is consistent with the given specifications.
+
+
+
+    TEST 3:
+    -------
+    soda.config
+        SodaCost               3
+        NumStudents            1
+        MaxPurchases           1
+        NumVendingMachines     5
+        MaxStockPerFlavour     20
+        MaxShippedPerFlavour   1
+        TimeBetweenShipments   10
+        GroupoffDelay          20
+        ParentalDelay          7
+        NumCouriers            4
+
+
+    DATA DESCRIPTION
+        We are using a low MaxShippedPerFlavour and a high max stock per vending machine to observe the 
+        truck restock vending machines fairly, note the truck must go back to the plant after every stock,
+        since it wont be able to fill the vending machine stock, which makes the behavior interesting
+    TESTING
+        The following are part of the test output that we will analyze
+Parent  Gropoff WATOff  Names   Truck   Plant   Stud0   Mach0   Mach1   Mach2   Mach3   Mach4   Cour0   Cour1   Cour2   Cour3
+******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
+                        N0,3            G1      V3
+                        N0,4    P1      P       V4
+                                d0,1
+                        N0,0    U0,79           V0      r
+D0,1                    N0,1    D0,0            V1      R
+        D3                                      V2
+D0,1    F               N0,2            G1      V3
+                        N0,3            P       V4
+                        N0,4    P1
+                                d1,1
+                        N0,0    U1,79           V0              r
+D0,2                    N0,1    D1,0            V1              R
+                        N0,2                    V2
+D0,1                    N0,3                    V3
+                        N0,4            G3      V4
+                        N0,0    P3      P       V0
+                                d2,3
+                        N0,1    U2,77           V1                      r
+Uninteresting output removed
+    ANALYSIS
+        We can see that the truck picked up one bottle from the plant, and tried to refill the first
+        vending machine unsuccessfully. The truck ran out of stock, so it immediately went back to the
+        plant to pick up more cargo. Upon returning, the truck moves on to the next vending machine, 
+        and attempts to restock it, and the cycle continues

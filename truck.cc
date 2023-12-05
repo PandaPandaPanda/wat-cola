@@ -39,7 +39,6 @@ void Truck::main() {
         } // try
                                                                                     // curMachine ensures cyclid order restocking 
         for (unsigned int servedVending = 0; servedVending < numVendingMachines; servedVending+=1) { // return to plant after complete cycle
-            bool noCargo = true;                                                    // return to plant if no more cargo
             unsigned int* machineInventory = machineList[curMachine]->inventory();  // begin restock by calling inventory
 
             PRINT({
@@ -49,11 +48,8 @@ void Truck::main() {
                 } // for
                 prt.print(Printer::Truck, 'd', machineList[curMachine]->getId(), total_remaining);
             }) // PRINT
-            for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {   // restock machine and check if truck is out of cargo
+            for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {   // restock machine
                 unsigned int neededStock = maxStockPerFlavour - machineInventory[i];// restock up to maxStockPerFlavour
-                if (noCargo && cargo[i]!=0) {
-                    noCargo = false;
-                } // if
                 if (neededStock > cargo[i]) {                                       
                     machineInventory[i] += cargo[i];
                     cargo[i] = 0;
@@ -65,7 +61,7 @@ void Truck::main() {
             PRINT({
                 int total_unfilled = 0;
                 for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
-                    total_unfilled = maxStockPerFlavour - machineInventory[i];
+                    total_unfilled += maxStockPerFlavour - machineInventory[i];
                 } // for
                 if (total_unfilled > 0) {                                           // fill unsuccessful if there is room available on any flavor
                     prt.print(Printer::Truck, 'U', machineList[curMachine]->getId(), total_unfilled);
@@ -81,6 +77,15 @@ void Truck::main() {
                 
                 prt.print(Printer::Truck, 'D', machineList[curMachine]->getId(), total_remaining);
             }) // PRINT
+            curMachine = (1+curMachine) % numVendingMachines;                       // cur machine was served, go to next machine
+            
+            bool noCargo = true;                                                    // return to plant if no more cargo
+            for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {   // check if truck is out of cargo
+                if (noCargo && cargo[i]!=0) {
+                    noCargo = false;
+                } // if
+            }
+            
             if (mprng(100) == 0) {                                                  // 1 in 100 chance of flat tire
                 PRINT(prt.print(Printer::Truck, 'W');)
                 yield(10);
@@ -88,8 +93,6 @@ void Truck::main() {
             if (noCargo) {                                                          // if no cargo - machine was not served, return to plant
                 break;
             } // if
-
-            curMachine = (1+curMachine) % numVendingMachines;                       // cur machine was served, go to next machine
         } // for
     } // for
 } // Truck::main
