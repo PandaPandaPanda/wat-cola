@@ -279,8 +279,9 @@ int Printer::return_id_for_kind(Kind kind) {
             return 4;
         case Printer::Kind::BottlingPlant:
             return 5;
+        default:
+            return -1;
     }
-    return -1;
 }
 
 int Printer::return_id_for_kind_and_id(Kind kind, unsigned int lid) {
