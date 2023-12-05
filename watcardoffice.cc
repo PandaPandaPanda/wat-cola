@@ -1,5 +1,3 @@
-#include <cassert>
-
 #include "watcardoffice.h"
 
 using namespace std;

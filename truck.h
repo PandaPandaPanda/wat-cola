@@ -6,11 +6,6 @@ _Task VendingMachine;
 _Task NameServer;
 _Task BottlingPlant;
 
-// ==== Global debug
-#include <iostream>
-extern bool debug;
-// ====
-
 _Task Truck {
 	Printer & prt;
 	NameServer & nameServer;
