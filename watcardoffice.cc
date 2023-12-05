@@ -49,14 +49,14 @@ WATCardOffice::~WATCardOffice() {
   delete[] couriers;
   if (debug) { cout << " couriers deleted" << endl;}
 
-  for (auto ptr : watCards) {
-    delete ptr;
-}
+  for (pair<unsigned int, WATCard*> p : card_map) {
+    delete p.second;
+  }
 }
 
 WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount ) {
   WATCard * card = new WATCard();
-  watCards.push_back(card);
+  card_map[sid] = card;
 
   Job * job = new Job( sid, amount, card );
   jobs.push(job);
@@ -107,6 +107,7 @@ void WATCardOffice::Courier::main() {
 
       if ( mprng(6) == 0 ) { // 1 in 6 chance of losing card
         PRINT( prt.print( Printer::Courier, id, 'L', job->sid ); )
+        office->card_map.erase( job->sid );
         job->result.exception( new Lost() );
       } else {
         PRINT( prt.print( Printer::Courier, id, 'T', job->sid, job->amount ); )
