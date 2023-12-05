@@ -88,9 +88,9 @@ int main( int argc, char *argv[] ) {
   for (unsigned int i = 0; i < params.numStudents; i+=1) {
     students[i] = new Student(prt, ns, office, groupoff, i, params.maxPurchases);
   } // for
-  for (unsigned int i = 0; i < params.numStudents; i+=1) {                                // wait for students to finish
+  // wait for students to finish
+  for (unsigned int i = 0; i < params.numStudents; i+=1) {
     delete students[i];
   } // for
-  delete bp;                                                                              // delete BP before vending machine which is stack allocated
-                                                                                          // all stack allocated objects deleted
+  delete bp;
 } // main
