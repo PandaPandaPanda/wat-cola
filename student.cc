@@ -77,6 +77,7 @@ void Student::main() {
         from the name server and attempt another purchase
         */
         vm = nameServer.getMachine(id);
+        PRINT( prt.print(Printer::Student, id, 'V', vm->getId());)
         if(debug) {cout << endl  << "STOCK ALERT" << endl;}
         continue; // didnt purchase - no wait
       }
