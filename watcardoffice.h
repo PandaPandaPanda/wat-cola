@@ -2,6 +2,7 @@
 #define WATCARDOFFICE_H
 
 #include <queue>
+#include <vector>
 #include <uPRNG.h>
 
 #include "watcard.h"
@@ -34,6 +35,7 @@ _Task WATCardOffice {
 	unsigned int numCouriers;
 	std::queue<Job *> jobs;
 	Courier ** couriers;
+	std::vector<WATCard*> watCards;
 
 	void main();
   public:
