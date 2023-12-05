@@ -25,7 +25,6 @@ void Student::main() {
   for ( ;bottles_to_purchase > 0; ) {
     yield(mprng(1,10));
     for ( ;; ) {
-      if (debug) {cout << endl << "Student " << id << " still need " << bottles_to_purchase << endl;}
       // to wait for money to be transferred either from the WATCardOffice to theirWATCard or from Groupoff to their gift card.
       // use the gift card first if both have money
       bool using_giftcard = false;
@@ -33,12 +32,10 @@ void Student::main() {
         giftcard = future_giftcard();
         card = giftcard;
         using_giftcard = true;
-        if (debug) {cout << endl <<"Student " << id << " has received a giftcard" << endl;}
       } or _Select(future_watcard) {
         try {
           watcard = future_watcard();
           card = watcard;
-          if (debug) {cout << endl <<"Student " << id << " has received a watcard " << endl;}
         } catch (WATCardOffice::Lost &l) {
           // the student must create a new WATCard from the WATCardOffice with a $5 balance
           PRINT( prt.print(Printer::Student, id, 'L'); )
@@ -49,7 +46,6 @@ void Student::main() {
         }
       }
 
-      if (debug) {cout << endl << "trying to buy " << endl;}
       try{
         _Enable{
           vm->buy(fav_flavour, *card);
@@ -70,7 +66,6 @@ void Student::main() {
         to their WATCard via the WATCard office and attempts another purchase
         */
         future_watcard = cardOffice.transfer(id, 5 + vm->cost(), future_watcard());
-        if (debug) {cout << endl << "FUND ALERT" << endl;}
         continue; // didnt purchase - no wait
       } _Catch(VendingMachine::Stock &s) {
         /*
@@ -78,7 +73,6 @@ void Student::main() {
         from the name server and attempt another purchase
         */
         vm = nameServer.getMachine(id);
-        if(debug) {cout << endl  << "STOCK ALERT" << endl;}
         continue; // didnt purchase - no wait
       }
       /*

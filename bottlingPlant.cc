@@ -16,7 +16,6 @@ BottlingPlant::BottlingPlant(Printer& prt, NameServer& nameServer, unsigned int 
 
 BottlingPlant::~BottlingPlant() {
     delete[] stock;
-    if (debug) {cout << "deleting truck" << endl;}
     delete truck;
 }
 
@@ -25,16 +24,8 @@ void BottlingPlant::main() {
     for (;;) {
         if (!closing) {
             yield(timeBetweenShipments);
-            if (debug) {cout << "production run: " << endl;}
             for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
                 stock[i]=mprng(0, maxShippedPerFlavour);
-            }
-            if (debug) {
-                cout << "stock: ";
-                for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
-                    cout << stock[i] << " ";
-                }
-                cout << endl;
             }
             PRINT({
                 int totalProduced = 0;
@@ -56,7 +47,6 @@ void BottlingPlant::main() {
                 stock[i] = 0;
             }
             if (no_stock && closing) {
-                if(debug){cout << "raising shutdown at truck" << endl;}
                 _Resume Shutdown() _At *truck;
                 bp_queue.signalBlock();
                 prt.print(Printer::BottlingPlant, 'F');

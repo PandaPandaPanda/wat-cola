@@ -9,7 +9,6 @@ Groupoff::Groupoff(Printer& prt, unsigned int numStudents, unsigned int sodaCost
     };
 
 Groupoff::~Groupoff() {
-    if(debug){cout << "deleting groupoff" << endl;}
     delete[] future_giftcards;
 }
 

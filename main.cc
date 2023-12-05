@@ -72,20 +72,9 @@ int main( int argc, char *argv[] ) {
   for (unsigned int i = 0; i < params.numStudents; i+=1) {
     students[i] = new Student(prt, ns, office, groupoff, i, params.maxPurchases);
   } // for
-  if (debug) cout << "main: all created" << endl;
   // wait for students to finish
   for (unsigned int i = 0; i < params.numStudents; i+=1) {
     delete students[i];
-    if (debug) cout << "main: deleting student " << i << endl;
   } // for
-  if (debug) cout << "main: deleting bp" << endl;
   delete bp;
-  if (debug) cout << "main: deleting bottling plant" << endl;
-  
-  // for (unsigned int i = 0; i < params.numVendingMachines; i+=1) {
-  //   if (debug) cout << "main: trying to delete vm " << i << endl;
-  //   delete vmList[i];
-  //   if (debug) cout << "main: deleting vm " << i << endl;
-  // }
-  if (debug) cout << "main: the end" << endl;
 } // main

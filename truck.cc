@@ -23,13 +23,6 @@ void Truck::main() {
         yield(prng(0,10));
         try {
             _Enable {
-                if (debug) {
-                    cout << "cur cargo: ";
-                    for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
-                        cout << cargo[i] << " ";
-                    }
-                    cout << endl;
-                }
                 plant.getShipment(cargo);
                 PRINT({
                     int totalPickedUp = 0;
@@ -39,22 +32,13 @@ void Truck::main() {
                     
                     prt.print(Printer::Truck, 'P', totalPickedUp);
                 })
-                if (debug) {
-                    cout << "cur cargo: ";
-                    for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
-                        cout << cargo[i] << " ";
-                    }
-                    cout << endl;
-                }
             }
         } _Catch(BottlingPlant::Shutdown & e) {
-            if(debug){cout << "TRUCK finished" << endl;}
             PRINT(prt.print(Printer::Truck, 'F');)
             return;
         }
         for (unsigned int servedVending = 0; servedVending < numVendingMachines; servedVending+=1) {
             bool noCargo = true;
-            if(debug){cout << "calling inventory" << endl;}
             unsigned int* machineInventory = machineList[curMachine]->inventory();
 
             PRINT({
@@ -86,18 +70,6 @@ void Truck::main() {
                     prt.print(Printer::Truck, 'U', machineList[curMachine]->getId(), total_unfilled);
                 }
             })
-            if (debug) {
-                cout << "restocked: ";
-                for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
-                    cout << machineInventory[i] << " ";
-                }
-                cout << endl;
-                cout << "leftover cargo: ";
-                for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {
-                    cout << cargo[i] << " ";
-                }
-                cout << endl;
-            }
             // delivery ended
             machineList[curMachine]->restocked();
             PRINT({

@@ -7,13 +7,11 @@ Bank::Bank( unsigned int numStudents ): numStudents(numStudents) {
 }
 
 Bank::~Bank() {
-  if (debug) {cout << "bank deleted" << endl;}
   delete[] accounts;
 }
 
 void Bank::deposit( unsigned int id, unsigned int amount ) {
   accounts[id]+=amount;
-   if (debug) {cout << "Student " << id << " deposits " << amount << endl;}
 }
 
 void Bank::withdraw( unsigned int id, unsigned int amount ) {
