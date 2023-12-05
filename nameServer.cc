@@ -47,7 +47,6 @@ void NameServer::main() {
             PRINT( prt.print(Printer::NameServer, 'N', cur_id, sid_to_machineid[cur_id]);)
             sid_to_machineid[cur_id] = (sid_to_machineid[cur_id] + 1) % numVendingMachines;
         } or _When(machine_cnt == numVendingMachines) _Accept(getMachineList) {
-            ns_queue.signalBlock();
             if (debug) {cout << "machine list" << endl;}
         }
     }
@@ -66,6 +65,5 @@ VendingMachine * NameServer::getMachine( unsigned int id ) {
 }
 
 VendingMachine** NameServer::getMachineList() {
-    ns_queue.wait();
     return machines;
 }

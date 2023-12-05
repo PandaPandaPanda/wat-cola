@@ -108,7 +108,7 @@ void Truck::main() {
                 
                 prt.print(Printer::Truck, 'D', machineList[curMachine]->getId(), total_remaining);
             })
-            if (prng(100) == 42) {
+            if (prng(100) == 0) {
                 PRINT(prt.print(Printer::Truck, 'W');)
                 yield(10);
             }

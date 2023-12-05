@@ -58,7 +58,7 @@ void Student::main() {
         // a free bottle of soda (which does not count as a purchased soda), 
         PRINT( prt.print(Printer::Student, id, using_giftcard ? 'a': 'A', fav_flavour, card->getBalance());)
         // 50% change the student watches an advertisement associated with it by yielding 4 times
-        if (mprng(0,1) == 0) {
+        if (mprng(2) == 0) {
           yield(4);
           break;
         }

@@ -1,0 +1,31 @@
+TEST DOCUMENTATION - SODA
+=========================
+<Summary>
+
+USER INTERFACE TESTING
+    This focuses on testing the command line argument processing for the program.
+
+    TEST 1:
+
+
+
+        TESTING
+
+
+        ANALYSIS
+
+This concludes user interface testing ------------------------------------------------------------------
+
+
+ALGORITHM TESTING
+
+    TEST 1:
+    -------
+    DATA DESCRIPTION
+    The input file used is "test.txt".
+    The contents of the file, with each line numbered, are:
+
+    TESTING
+
+
+    ANALYSIS

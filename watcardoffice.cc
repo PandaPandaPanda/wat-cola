@@ -99,7 +99,7 @@ void WATCardOffice::Courier::main() {
       bank.withdraw( job->sid, job->amount );
       job->card->deposit( job->amount ); // deposit money into card
 
-      if ( prng(0, 5) == 0 ) { // 1 in 6 chance of losing card
+      if ( prng(6) == 0 ) { // 1 in 6 chance of losing card
         PRINT( prt.print( Printer::Courier, id, 'L', job->sid ); )
         delete job->card;
         job->result.exception( new Lost() );
