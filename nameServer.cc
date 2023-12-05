@@ -11,12 +11,12 @@ NameServer::NameServer( Printer & prt, unsigned int numVendingMachines, unsigned
         for (unsigned int i = 0; i < numStudents; i++) {
             sid_to_machineid[i] = i % numVendingMachines;
         }
-    };
+} // NameServer::NameServer
 
 NameServer::~NameServer() {
     delete[] machines; // delete array, vending machine itself is cleanup elsewhere
-    delete[] sid_to_machineid;
-}
+    delete[] sid_to_machineid; // delete mapping of student id to machine id
+} // NameServer::~NameServer
 
 void NameServer::main() {
     PRINT( prt.print(Printer::NameServer, 'S'); )
@@ -42,17 +42,17 @@ void NameServer::main() {
     }
 
     PRINT( prt.print(Printer::NameServer, 'F'); )
-}
+} // NameServer::main
 
 void NameServer::VMregister( VendingMachine * vendingmachine ) {
     machines[machine_cnt] = vendingmachine;
-}
+} // NameServer::VMregister
 
 VendingMachine * NameServer::getMachine( unsigned int id ) {
     cur_id = id; // save value of id for main to use
     return machines[sid_to_machineid[id]]; // get the machine student is currently assigned to
-}
+} // NameServer::getMachine
 
 VendingMachine** NameServer::getMachineList() {
     return machines;
-}
+} // NameServer::getMachineList

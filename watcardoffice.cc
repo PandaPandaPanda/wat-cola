@@ -1,5 +1,4 @@
 #include "watcardoffice.h"
-
 using namespace std;
 
 void WATCardOffice::main() {
@@ -26,14 +25,14 @@ void WATCardOffice::main() {
   }
 
   PRINT( prt.print( Printer::WATCardOffice, 'F' ); )
-}
+} // WATCardOffice::main
 
 WATCardOffice::WATCardOffice( Printer & prt, Bank & bank, unsigned int numCouriers ) : prt{prt}, bank{bank}, numCouriers{numCouriers}  {
   couriers = new Courier*[numCouriers];
   for ( unsigned int i = 0; i < numCouriers; i++ ) { // create fixed # of couriers
     couriers[i] = new Courier( prt, bank, this, i );
   }
-} 
+}  // WATCardOffice::WATCardOffice
 
 WATCardOffice::~WATCardOffice() {
   for ( unsigned int i = 0; i < numCouriers; i++) {
@@ -48,7 +47,7 @@ WATCardOffice::~WATCardOffice() {
   for (pair<unsigned int, WATCard*> p : card_map) {
     delete p.second;
   }
-}
+} // WATCardOffice::~WATCardOffice
 
 WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount ) {
   WATCard * card = new WATCard();
@@ -58,14 +57,14 @@ WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount )
   jobs.push(job);
 
   return job->result;
-}
+} // WATCardOffice::create
 
 WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount, WATCard * card ) {
   Job* job = new Job(sid, amount, card);
   jobs.push(job);
 
   return job->result;
-}
+} // WATCardOffice::transfer
 
 WATCardOffice::Job* WATCardOffice::requestWork() {
   if ( jobs.empty() ) {
@@ -75,7 +74,7 @@ WATCardOffice::Job* WATCardOffice::requestWork() {
   // pop job in watcardoffice main
 
   return job;
-}
+} // WATCardOffice::requestWork
 
 void WATCardOffice::Courier::main() {
   PRINT( prt.print( Printer::Courier, id, 'S' ); )
@@ -100,6 +99,7 @@ void WATCardOffice::Courier::main() {
 
       if ( mprng(6) == 0 ) { // 1 in 6 chance of losing card
         PRINT( prt.print( Printer::Courier, id, 'L', job->sid ); )
+        delete job->card;
         office->card_map.erase( job->sid );
         job->result.exception( new Lost() );
       } else {
@@ -111,7 +111,7 @@ void WATCardOffice::Courier::main() {
   }
 
   PRINT( prt.print( Printer::Courier, id, 'F' ); )
-}
+} // Courier::main
 
 WATCardOffice::Courier::Courier( Printer & prt, Bank & bank, WATCardOffice * office, unsigned int id ) 
-  : prt{prt}, bank{bank}, office{office}, id{id} {}
+  : prt{prt}, bank{bank}, office{office}, id{id} {} // Courier::Courier

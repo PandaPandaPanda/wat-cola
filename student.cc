@@ -6,7 +6,6 @@
 using namespace std;
 
 void Student::main() {
-
   // begins by selecting a random number of bottles to purchase [1, MaxPurchases], a random favourite flavour [0, 3]
   int bottles_to_purchase = mprng(1, maxPurchases);
   BottlingPlant::Flavours fav_flavour = (BottlingPlant::Flavours)mprng(0, BottlingPlant::Flavours::NUM_OF_FLAVOURS-1);
@@ -86,12 +85,19 @@ void Student::main() {
       bottles_to_purchase -= 1; // reduce only on regular purchase (not free sodas)
       break;
     }
-
   }
+
+  if (giftcard != nullptr) {
+    delete giftcard;
+  }
+  _When(giftcard == nullptr) _Select(future_giftcard) {
+    delete future_giftcard();
+  }
+  
   PRINT( prt.print(Printer::Student, id, 'F');)
-}
+} // Student::main
 
 Student::Student( Printer & prt, NameServer & nameServer, WATCardOffice & cardOffice, Groupoff & groupoff,
   unsigned int id, unsigned int maxPurchases ) : 
   prt(prt), nameServer(nameServer), cardOffice(cardOffice), groupoff(groupoff), id(id), maxPurchases(maxPurchases) {
-}
+} // Student::Student
