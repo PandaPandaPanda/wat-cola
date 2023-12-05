@@ -7,11 +7,6 @@
 #include "nameServer.h"
 #include "groupoff.h"
 
-// ==== Global debug
-#include <iostream>
-extern bool debug;
-// ====
-
 extern PRNG mprng;
 
 _Monitor Printer;

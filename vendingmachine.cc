@@ -3,7 +3,6 @@
 #include "watcard.h"
 #include "nameServer.h"
 #include "student.h"
-#include <iostream>
 
 using namespace std;
 

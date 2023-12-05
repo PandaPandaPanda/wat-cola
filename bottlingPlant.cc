@@ -1,7 +1,6 @@
 #include "bottlingPlant.h"
 #include "truck.h"
 #include "printer.h"
-#include <iostream>
 
 using namespace std;
 

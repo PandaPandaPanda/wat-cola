@@ -1,5 +1,4 @@
 #include "nameServer.h"
-#include <iostream>
 
 using namespace std;
 

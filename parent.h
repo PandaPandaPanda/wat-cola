@@ -6,10 +6,6 @@
 #include "bank.h"
 #include "printer.h"
 
-// ==== Global debug
-#include <iostream>
-extern bool debug;
-// ====
 
 extern PRNG mprng;
 
