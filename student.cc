@@ -72,6 +72,7 @@ void Student::main() {
         from the name server and attempt another purchase
         */
         vm = nameServer.getMachine(id);
+        PRINT( prt.print(Printer::Student, id, 'V', vm->getId());)
         continue; // didnt purchase - no wait
       }
       /*
