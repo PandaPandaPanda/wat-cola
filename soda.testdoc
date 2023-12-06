@@ -125,3 +125,34 @@ Uninteresting output removed
         vending machine unsuccessfully. The truck ran out of stock, so it immediately went back to the
         plant to pick up more cargo. Upon returning, the truck moves on to the next vending machine, 
         and attempts to restock it, and the cycle continues
+
+    TEST 5:
+    -------
+    soda.config
+        SodaCost               2
+        NumStudents            5
+        MaxPurchases           5
+        NumVendingMachines     1
+        MaxStockPerFlavour     1
+        MaxShippedPerFlavour   1
+        TimeBetweenShipments   1
+        GroupoffDelay          2
+        ParentalDelay          10
+        NumCouriers            5
+
+    DATA DESCRIPTION
+        We are creating a situation where there is many student waiting on just a few machine.
+        The vending manchine storage is large but shipment size is small, but speed is fast.
+
+    TESTING:
+        We are looking at a couple details here. 
+        - The student number is much larger than machine number, so we expect the the program to run for some time
+        - The shipment is frequent but quantity is small, so the getShipment is called very frequently 
+            this is stress testing truck and bottling plant
+        - However the plant and then truck should be quickly shutdown once student finish buying
+    
+    ANALYSIS
+        This is stress testing truck and plant. We expect them to be active constantly.
+        However, once the student finishes, the bottling plant should finish and truck should stop immediately
+        without going for another cycle.
+        This is a test case that help locating our previous bug where busy truck prevent plant from shutting down.
