@@ -145,6 +145,37 @@ Uninteresting output removed
         The vending manchine storage is large but shipment size is small, but speed is fast.
 
     TESTING:
+Parent  Gropoff WATOff  Names   Truck   Plant   Stud0   Stud1   Stud2   Stud3   Stud4   Mach0   Mach1   Cour0   Cour1   Cour2   Cour3   Cour4
+******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
+.... last student is about to finish
+D1,2                                            B1,3
+D0,1                                            F
+D0,2
+D4,3
+D4,3
+D3,2
+D1,1
+D1,2
+D0,3
+D2,1
+D4,1
+D3,3
+D4,2
+D2,3                                    G5
+D4,3
+D0,1
+D1,1
+D2,1                                    P
+D0,1                            P5
+                                d0,5
+D0,3                            U0,383                                                  r
+D0,1                            D0,0
+D3,1                                                                                    R
+D1,3
+D2,3
+D4,3                            F
+D2,2                                    F
+... cleanup continues
         We are looking at a couple details here. 
         - The student number is much larger than machine number, so we expect the the program to run for some time
         - The shipment is frequent but quantity is small, so the getShipment is called very frequently 
@@ -154,5 +185,5 @@ Uninteresting output removed
     ANALYSIS
         This is stress testing truck and plant. We expect them to be active constantly.
         However, once the student finishes, the bottling plant should finish and truck should stop immediately
-        without going for another cycle.
+        int the subsequent for another cycle.
         This is a test case that help locating our previous bug where busy truck prevent plant from shutting down.
