@@ -34,7 +34,9 @@ void BottlingPlant::main() {
                 prt.print(Printer::BottlingPlant, 'G', totalProduced);
             }) // PRINT
         } // if
-        _Accept(getShipment) {
+        _Accept(~BottlingPlant) {
+            closing = true;                                                             // plant is closing on dtor call - no more production runs
+        } or _Accept(getShipment) {
             unsigned int* cargo = (unsigned int*)bp_queue.front();                      // get cargo pointer from shadow queue
             bool no_stock = true;                                                       // check if there is stock in plant
             for (int i = 0; i < BottlingPlant::Flavours::NUM_OF_FLAVOURS; i+=1) {       // restock truck cargo
@@ -52,8 +54,6 @@ void BottlingPlant::main() {
             } // if
             prt.print(Printer::BottlingPlant, 'P');
             bp_queue.signalBlock();                                                     // let getShipment caller (truck) continue 
-        } or _Accept(~BottlingPlant) {
-            closing = true;                                                             // plant is closing on dtor call - no more production runs
         } // _Accept
     } // for
 } // BottlingPlant::main
