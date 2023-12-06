@@ -61,15 +61,16 @@ ALGORITHM TESTING
 Parent  Gropoff WATOff  Names   Truck   Plant   Stud0   Mach0   Mach1   Mach2   Mach3   Mach4   Cour0   Cour1   Cour2   Cour3
 ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
 Uninteresting output removed
-                        R5      S       S       S1,1                                    S3
+                        R5      S       S       S3,1                                    S3
 D0,1            C0,5    N0,0                    V0                                              t0,5
 D0,3            W       N0,1                    V1                                              T0,5
 D0,1                    N0,2                    V2
                         N0,3                    V3
-                        N0,4            G5      V4
+                        N0,4            G9      V4
         D3                                      V0
-D0,3    F               N0,0    P5      P       V1
-                        N0,1    d0,5            V2      r
+D0,3    F               N0,0    P9      P       V1
+                        N0,1    d0,9            V2      r
+                        N0,2    D0,5
 Uninteresting output removed
     ANALYSIS
         We can see that since none of the machines have been restocked due to the long shipment time, the student 
@@ -101,30 +102,82 @@ Uninteresting output removed
         The following are part of the test output that we will analyze
 Parent  Gropoff WATOff  Names   Truck   Plant   Stud0   Mach0   Mach1   Mach2   Mach3   Mach4   Cour0   Cour1   Cour2   Cour3
 ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
-                        N0,3            G1      V3
-                        N0,4    P1      P       V4
-                                d0,1
-                        N0,0    U0,79           V0      r
-D0,1                    N0,1    D0,0            V1      R
-        D3                                      V2
-D0,1    F               N0,2            G1      V3
-                        N0,3            P       V4
-                        N0,4    P1
-                                d1,1
-                        N0,0    U1,79           V0              r
-D0,2                    N0,1    D1,0            V1              R
-                        N0,2                    V2
-D0,1                    N0,3                    V3
-                        N0,4            G3      V4
-                        N0,0    P3      P       V0
-                                d2,3
-                        N0,1    U2,77           V1                      r
+Uninteresting output removed
+D0,2            W                       G3      L                                               L0
+                C0,5            P3      P                                                               t0,5
+                                d0,3
+                W               U0,77                   r
+D0,1    D3                      D0,0                    R
+D0,1    F                               G3      G1,0    B1,0
+                                P3      P       F
+                                d1,3
+                                U1,77                           r
+D0,3                            D1,0                            R                                       T0,5
+D0,1                                    G4
+                                P4      P
+                                d2,4
+D0,2                            U2,76                                   r
+                                D2,0                                    R
+D0,2                            F       F                               F       F       F
+D0,2                    F                               F       F
 Uninteresting output removed
     ANALYSIS
         We can see that the truck picked up one bottle from the plant, and tried to refill the first
         vending machine unsuccessfully. The truck ran out of stock, so it immediately went back to the
         plant to pick up more cargo. Upon returning, the truck moves on to the next vending machine, 
         and attempts to restock it, and the cycle continues
+
+    TEST 4:
+    -------
+    soda.config
+        SodaCost               3
+        NumStudents            1
+        MaxPurchases           1
+        NumVendingMachines     5
+        MaxStockPerFlavour     1
+        MaxShippedPerFlavour   20
+        TimeBetweenShipments   10
+        GroupoffDelay          20
+        ParentalDelay          7
+        NumCouriers            4
+    DATA DESCRIPTION
+        We will be using a shipment time of 10 such that the student will check each vending machine
+        shortly before they are about to be restocked, showing a race between the student and the truck.
+        We will also use a large MaxShippedPerFlavour to show the truck behavior after restocking all vending
+        machines without depleting its cargo.
+    TESTING
+        The following are part of the test output that we will analyzes
+Parent  Gropoff WATOff  Names   Truck   Plant   Stud0   Mach0   Mach1   Mach2   Mach3   Mach4   Cour0   Cour1   Cour2   Cour3
+******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
+Uninteresting output removed
+                        R5      S       S       S0,1                                    S3
+D0,1            C0,5    N0,0                    V0                                              t0,5
+D0,1            W                       G41                                                     T0,5
+                        N0,1    P41     P       V1
+D0,3                    N0,2    d0,41           V2      r
+                                D0,37
+                        N0,3    d1,37           V3      R       r
+                                D1,33
+                        N0,4    d2,33           V4              R       r
+                                D2,29
+        D3                      d3,29           V0
+        F               N0,0    D3,25                   B0,0            R       r
+                                d4,25
+                                U4,1            B0,2
+D0,1                            D4,22   G46     F                               R       r
+D0,1                            P46     P                                               R
+                                d0,46                   r
+                                D0,45
+Uninteresting output removed
+    ANALYSIS
+        We can see that the the student is checking each vending machine to see it's empty right
+        before the truck comes to refill that machine, and this chase continues until the student
+        eventually loops back around to the first vending machine again, at which point they are
+        able to purchase the drink.
+        Note that we can also see the truck making a full cycle around all the vennding machines
+        without depleting its cargo, and heading back to the plant to throw out expired soda
+        and pick up new cargo, and restarting at the first vending machine.  
+
 
     TEST 5:
     -------
@@ -156,3 +209,164 @@ Uninteresting output removed
         However, once the student finishes, the bottling plant should finish and truck should stop immediately
         without going for another cycle.
         This is a test case that help locating our previous bug where busy truck prevent plant from shutting down.
+
+
+    TEST 6 :
+    -------
+    soda.config
+        SodaCost               3
+        NumStudents            3
+        MaxPurchases           1
+        NumVendingMachines     3
+        MaxStockPerFlavour     1
+        MaxShippedPerFlavour   20
+        TimeBetweenShipments   10
+        GroupoffDelay          1
+        ParentalDelay          7
+        NumCouriers            4
+    DATA DESCRIPTION
+        We will be using a very low groupoff delay to virtually guarantee that the giftcard is delivered 
+        to the student first, as the groupoff will yield very little before sending out the watcard to 
+        the student 
+    TESTING
+        The following are part of the test output that we will analyzes
+Parent  Gropoff WATOff  Names   Truck   Plant   Stud0   Stud1   Stud2   Mach0   Mach1   Mach2   Cour0   Cour1   Cour2   Cour3
+******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
+S       S       S       S                                                                       S       S       S       S
+                        R1                                              S3
+                        R2                                                      S3
+D0,2                    R3      S       S       S2,1                                    S3
+                C0,5    N0,0                    V0      S1,1    S0,1                            t0,5
+                W                                       V1
+D0,1    D3      C1,5    N1,1                                    V2
+        D3      C2,5    N2,2
+        D3
+        F       W       N2,0            G31     V1              V0                                      t1,5    t2,5
+D2,2            W       N0,1    P31     P       V2
+                        N0,2                                    V1
+                        N2,1    d0,31
+                        N0,0    U0,1            V0                      r
+D1,1                    N1,2    D0,28                   V2              R
+                        N1,0    d1,28           a2,3    V0      V2      A
+                        N2,2    U1,1    G13                     V0              r
+                        N2,0    D1,25                   G1,0            B1,0    R
+                                d2,25                   F
+D0,2                            U2,1                                                    r       T0,5
+                                D2,22                           G0,0    B0,0            R
+D0,3                    N0,1            P       V1              F               B2,0
+Uninteresting output removed
+    ANALYSIS
+        We can see that the groupoff was able to deposit its gift to students very quickly before terminating.
+        The students, thanks to the early deposts by groupoff, are all able to purchase sodas (with student 0
+        getting a free soda) using a giftcard.
+
+
+    TEST 8:
+    -------
+    soda.config
+        SodaCost				2
+        NumStudents				2
+        MaxPurchases			8
+        NumVendingMachines		3
+        MaxStockPerFlavour		5
+        MaxShippedPerFlavour	6
+            
+        TimeBetweenShipments	3
+        GroupoffDelay			20
+        ParentalDelay			5
+        NumCouriers				1
+    DATA DESCRIPTION
+        We will be using a high max purchase count for the students to showcase them
+        staying at the same vending machine to repeatedly purchase soda if possible.
+        We will also use a balanced set of configuration values, such that the tasks
+        would likely not end early
+
+    TESTING
+        The following are part of the test output that we will analyzes
+j434zhou@ubuntu2204-002:~/cs343/6$ ./soda
+Parent  Gropoff WATOff  Names   Truck   Plant   Stud0   Stud1   Mach0   Mach1   Mach2   Cour0
+******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
+S       S       S       S                                                               S
+                        R1                                      S2
+D1,3                    R2                                              S2
+                        R3      S       S       S0,6                            S2
+D1,1            C0,5    N0,0            G6      V0      S0,2                            t0,5
+                W                                       V1
+D0,1            C1,5    N1,1    P6      P
+                                d0,6
+D0,3                            U0,14                           r
+D1,1                            D0,0    G17                     R
+D1,3                            P17     P
+                                d1,17
+        D2                      U1,4                                    r
+                                D1,1
+                                d2,1
+D0,1                            U2,19   G6                              R       r
+                                D2,0                                                    T0,5
+                                                                                        t1,5
+                W       N0,1                    V1      a0,2            A       R       T1,5
+D1,3                                    P       B0,3                    B0,1
+D0,1                            P6
+                                d0,6
+                                U0,8            B0,1            r       B0,0
+D1,3    D2                      D0,0    G8              V2      R
+        F               N1,2            P               V0
+                        N1,0    P8                              B0,2
+                                d1,8
+D1,2                            U1,4                    G0,0            r
+                                D1,5
+                                d2,5
+                                U2,14   G11                             R       r
+D0,1                            D2,0            G0,0    B0,3    B0,1    B0,0    R
+D0,2                            P11     P               F
+                                d0,11
+                                U0,4                            r
+D0,3            T0,7            D0,5                            R
+                                d1,5
+                                U1,4                                                    t0,7
+                W               D1,4    G16                             r               T0,7
+                                d2,4
+D0,1                            U2,13                                   R       r
+D0,2                            D2,3    P       B0,6                    B0,0    R
+                                P16
+                                d0,16
+D0,3                            U0,2            V2              r
+                        N0,2    D0,14                           R
+                                d1,14
+                        N0,0    U1,3    G17     V0              B0,4    r
+                                D1,12
+                                d2,12
+D1,1                            U2,9            B0,4                    R       r
+D0,1                            D2,8            B0,2            B0,3            R
+                                P17     P       F
+D1,3                            d0,17                           r
+                                D0,13
+                                d1,13   G14                     R       r
+                                D1,10
+                                d2,10
+D1,3                            U2,7                                    R       r
+D0,1                            D2,8                                            R
+D1,2                            P14     P
+                                d0,14                           r
+                                D0,14
+D1,2                            d1,14                           R       r
+                                D1,14
+                                d2,14
+                                U2,4                                    R       r
+D0,3                            D2,11                                           R
+D1,3                            F       F                                       F
+D0,3                    F                                       F       F
+D1,1            F                                                                       F
+D1,3
+F
+*****************
+    ANALYSIS
+        We can see that the the student is repeatedly purchasing from the same vending
+        machine as they have enough money left after previous purchases and the machine
+        has enough stock left. We can also see the truck coming back to pick up 
+        new shipments with more and more leftover cargo as the machines are readily stocked
+        but not enough students are consuming the soda for the machines to deplete the 
+        truck's cargo.
+
+
+
