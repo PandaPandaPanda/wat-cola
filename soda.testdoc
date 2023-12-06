@@ -24,7 +24,7 @@ USER INTERFACE TESTING
         the first half are invalid and is not expected to run,
         output message indicating the correct invokation or indicating the config file doesn't exist
 
-        the second half are valid and is expected to run
+        the second half are valid and is expected to run, it also tests multi-procesor scenario
 
     ANALYSIS
         the first half of test are invalid as in they either have non-positive vakye in incorrect param order,
