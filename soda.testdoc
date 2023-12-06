@@ -187,3 +187,45 @@ D2,2                                    F
         However, once the student finishes, the bottling plant should finish and truck should stop immediately
         int the subsequent for another cycle.
         This is a test case that help locating our previous bug where busy truck prevent plant from shutting down.
+
+    TEST 7:
+    -------
+    soda.config
+        SodaCost				15	
+        NumStudents				2	
+        MaxPurchases			2	
+        NumVendingMachines		3	
+        MaxStockPerFlavour		5	
+        MaxShippedPerFlavour	3	
+        TimeBetweenShipments	50	
+        GroupoffDelay			10	
+        ParentalDelay			5	
+        NumCouriers				2
+
+    DATA DESCRIPTION
+        The soda cost is very high and student are required to buy 2 soda (so the giftcard alone is not enough)
+    
+    TESTING:
+Parent  Gropoff WATOff  Names   Truck   Plant   Stud0   Stud1   Stud2   Stud3   Stud4   Mach0   Mach1   Cour0   Cour1   Cour2   Cour3   Cour4
+******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
+.... parent slowly deposit money and accumulate 15+5=20 dollars
+D1,1                    N0,0                    V1      G0,0            B0,1
+D0,1            T1,20   N0,1                    G2,0                    B2,0
+D0,3            W                                                                       t1,20
+D1,2            T0,20                                                                           t0,20
+D1,1            W                                       B0,10           B0,0            T1,20
+D0,1                                                    F
+D1,2
+D1,3
+D1,2
+D0,1                                    G5
+                                P5      P
+                                d2,5
+D0,2                            U2,15                                           r               T0,20
+                        N0,2    D2,0            V2                              R
+.... Uninteresting
+
+    ANALYSIS:
+        We can see parent slowly deposit enough moeny for students, the courier is waiting the for the moeny to reach 20 (sodacost + 5)
+        Then the card is transfered to student and it proceed to buy the soda
+        We also see that regarless of soda price, when we buy with giftcard, it use up the exact amount (G2,0)
