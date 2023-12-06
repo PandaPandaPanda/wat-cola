@@ -24,7 +24,7 @@ USER INTERFACE TESTING
         the first half are invalid and is not expected to run,
         output message indicating the correct invokation or indicating the config file doesn't exist
 
-        the second half are valid and is expected to run
+        the second half are valid and is expected to run, it also tests multi-procesor scenario
 
     ANALYSIS
         the first half of test are invalid as in they either have non-positive vakye in incorrect param order,
@@ -198,6 +198,37 @@ Uninteresting output removed
         The vending manchine storage is large but shipment size is small, but speed is fast.
 
     TESTING:
+Parent  Gropoff WATOff  Names   Truck   Plant   Stud0   Stud1   Stud2   Stud3   Stud4   Mach0   Mach1   Cour0   Cour1   Cour2   Cour3   Cour4
+******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
+.... last student is about to finish
+D1,2                                            B1,3
+D0,1                                            F
+D0,2
+D4,3
+D4,3
+D3,2
+D1,1
+D1,2
+D0,3
+D2,1
+D4,1
+D3,3
+D4,2
+D2,3                                    G5
+D4,3
+D0,1
+D1,1
+D2,1                                    P
+D0,1                            P5
+                                d0,5
+D0,3                            U0,383                                                  r
+D0,1                            D0,0
+D3,1                                                                                    R
+D1,3
+D2,3
+D4,3                            F
+D2,2                                    F
+... cleanup continues
         We are looking at a couple details here. 
         - The student number is much larger than machine number, so we expect the the program to run for some time
         - The shipment is frequent but quantity is small, so the getShipment is called very frequently 
@@ -207,7 +238,7 @@ Uninteresting output removed
     ANALYSIS
         This is stress testing truck and plant. We expect them to be active constantly.
         However, once the student finishes, the bottling plant should finish and truck should stop immediately
-        without going for another cycle.
+        int the subsequent for another cycle.
         This is a test case that help locating our previous bug where busy truck prevent plant from shutting down.
 
 
@@ -259,6 +290,50 @@ Uninteresting output removed
         We can see that the groupoff was able to deposit its gift to students very quickly before terminating.
         The students, thanks to the early deposts by groupoff, are all able to purchase sodas (with student 0
         getting a free soda) using a giftcard.
+
+
+
+    TEST 7:
+    -------
+    soda.config
+        SodaCost				15	
+        NumStudents				2	
+        MaxPurchases			2	
+        NumVendingMachines		3	
+        MaxStockPerFlavour		5	
+        MaxShippedPerFlavour	3	
+        TimeBetweenShipments	50	
+        GroupoffDelay			10	
+        ParentalDelay			5	
+        NumCouriers				2
+
+    DATA DESCRIPTION
+        The soda cost is very high and student are required to buy 2 soda (so the giftcard alone is not enough)
+    
+    TESTING:
+Parent  Gropoff WATOff  Names   Truck   Plant   Stud0   Stud1   Stud2   Stud3   Stud4   Mach0   Mach1   Cour0   Cour1   Cour2   Cour3   Cour4
+******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
+.... parent slowly deposit money and accumulate 15+5=20 dollars
+D1,1                    N0,0                    V1      G0,0            B0,1
+D0,1            T1,20   N0,1                    G2,0                    B2,0
+D0,3            W                                                                       t1,20
+D1,2            T0,20                                                                           t0,20
+D1,1            W                                       B0,10           B0,0            T1,20
+D0,1                                                    F
+D1,2
+D1,3
+D1,2
+D0,1                                    G5
+                                P5      P
+                                d2,5
+D0,2                            U2,15                                           r               T0,20
+                        N0,2    D2,0            V2                              R
+.... Uninteresting
+
+    ANALYSIS:
+        We can see parent slowly deposit enough moeny for students, the courier is waiting the for the moeny to reach 20 (sodacost + 5)
+        Then the card is transfered to student and it proceed to buy the soda
+        We also see that regarless of soda price, when we buy with giftcard, it use up the exact amount (G2,0)
 
 
     TEST 8:
@@ -367,6 +442,3 @@ F
         new shipments with more and more leftover cargo as the machines are readily stocked
         but not enough students are consuming the soda for the machines to deplete the 
         truck's cargo.
-
-
-
